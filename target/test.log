@@ -1,0 +1,146 @@
+05 Mar 2020 21:01:34,857 INFO  ubb.tourism.Application 23 main - MySQL properties have been loaded successfully
+05 Mar 2020 21:02:38,682 ERROR ubb.tourism.Application 23 main - MySQL properties have been loaded successfully
+05 Mar 2020 21:15:20,494 INFO  ubb.tourism.Application 38 getProperties - MySQL properties have been loaded successfully
+05 Mar 2020 21:15:20,793 ERROR ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Error number of users
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[SIZE] from user' at line 1
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_221]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_221]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_221]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_221]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.Util.getInstance(Util.java:408) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:943) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2527) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2680) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2487) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1858) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1966) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at ubb.tourism.data.access.repository.impl.UserRepositoryImpl.size(UserRepository.java:34) [main/:?]
+	at ubb.tourism.Application.testSize(Application.java:27) [main/:?]
+	at ubb.tourism.Application.main(Application.java:19) [main/:?]
+05 Mar 2020 21:16:10,845 INFO  ubb.tourism.Application 38 getProperties - MySQL properties have been loaded successfully
+05 Mar 2020 21:17:12,263 INFO  ubb.tourism.Application 38 getProperties - MySQL properties have been loaded successfully
+05 Mar 2020 21:17:12,527 ERROR ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Error getting number of users
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[SIZE from user' at line 1
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_221]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_221]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_221]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_221]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.Util.getInstance(Util.java:408) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:943) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2527) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2680) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2487) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1858) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1966) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at ubb.tourism.data.access.repository.impl.UserRepositoryImpl.size(UserRepository.java:34) [main/:?]
+	at ubb.tourism.Application.testSize(Application.java:27) [main/:?]
+	at ubb.tourism.Application.main(Application.java:19) [main/:?]
+05 Mar 2020 21:18:03,333 INFO  ubb.tourism.Application 38 getProperties - MySQL properties have been loaded successfully
+05 Mar 2020 21:18:03,339 TRACE ubb.tourism.data.access.repository.impl.UserRepositoryImpl 31 size - Enter
+05 Mar 2020 21:18:03,602 ERROR ubb.tourism.data.access.repository.impl.UserRepositoryImpl 40 size - Error getting number of users
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[SIZE from user' at line 1
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_221]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_221]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_221]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_221]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.Util.getInstance(Util.java:408) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:943) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2527) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2680) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2487) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1858) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1966) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at ubb.tourism.data.access.repository.impl.UserRepositoryImpl.size(UserRepository.java:35) [main/:?]
+	at ubb.tourism.Application.testSize(Application.java:27) [main/:?]
+	at ubb.tourism.Application.main(Application.java:19) [main/:?]
+05 Mar 2020 21:24:20,606 INFO  ubb.tourism.Application 38 getProperties - MySQL properties have been loaded successfully
+05 Mar 2020 21:24:20,918 ERROR ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Error getting number of users
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[SIZE from user' at line 1
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method) ~[?:1.8.0_221]
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62) ~[?:1.8.0_221]
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45) ~[?:1.8.0_221]
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423) ~[?:1.8.0_221]
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:425) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.Util.getInstance(Util.java:408) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:943) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3973) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3909) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2527) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2680) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2487) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeInternal(PreparedStatement.java:1858) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeQuery(PreparedStatement.java:1966) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at ubb.tourism.data.access.repository.impl.UserRepositoryImpl.size(UserRepository.java:34) [main/:?]
+	at ubb.tourism.Application.testSize(Application.java:27) [main/:?]
+	at ubb.tourism.Application.main(Application.java:19) [main/:?]
+06 Mar 2020 10:16:07,622 INFO  ubb.tourism.Application 36 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 10:16:08,841 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 33 size - Getting number of users
+06 Mar 2020 10:43:58,087 INFO  ubb.tourism.Application 40 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 10:43:58,435 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 33 size - Getting size of user repository
+06 Mar 2020 10:43:58,504 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 49 save - Saving new user with username username
+06 Mar 2020 10:52:29,917 INFO  ubb.tourism.Application 43 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 10:52:30,261 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 34 size - Getting size of user repository
+06 Mar 2020 10:52:30,276 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 50 save - Saving new user with username username
+06 Mar 2020 10:52:30,354 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 34 size - Getting size of user repository
+06 Mar 2020 10:52:30,354 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 75 findOne - Getting user with userId 8
+06 Mar 2020 11:01:48,535 INFO  ubb.tourism.Application 56 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 11:01:48,926 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 36 size - Getting size of user repository
+06 Mar 2020 11:01:48,942 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 52 save - Saving new user with username username
+06 Mar 2020 11:01:49,129 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 36 size - Getting size of user repository
+06 Mar 2020 11:01:49,129 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 96 findOne - Getting user with userId 9
+06 Mar 2020 11:01:49,145 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 67 update - Updating user with userId 9
+06 Mar 2020 11:01:49,223 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 96 findOne - Getting user with userId 9
+06 Mar 2020 11:01:49,223 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 83 delete - Deleting user with userId 9
+06 Mar 2020 11:01:49,239 ERROR ubb.tourism.data.access.repository.impl.UserRepositoryImpl 89 delete - Error deleting user with userId 9
+java.sql.SQLException: No value specified for parameter 2
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:964) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:897) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:886) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.checkAllParametersSet(PreparedStatement.java:2211) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.fillSendPacket(PreparedStatement.java:2191) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeUpdateInternal(PreparedStatement.java:2058) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeUpdateInternal(PreparedStatement.java:2013) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeLargeUpdate(PreparedStatement.java:5104) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at com.mysql.jdbc.PreparedStatement.executeUpdate(PreparedStatement.java:1998) ~[mysql-connector-java-5.1.44.jar:5.1.44]
+	at ubb.tourism.data.access.repository.impl.UserRepositoryImpl.delete(UserRepositoryImpl.java:87) [main/:?]
+	at ubb.tourism.data.access.repository.impl.UserRepositoryImpl.delete(UserRepositoryImpl.java:15) [main/:?]
+	at ubb.tourism.Application.testSize(Application.java:44) [main/:?]
+	at ubb.tourism.Application.main(Application.java:19) [main/:?]
+06 Mar 2020 11:01:49,348 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 36 size - Getting size of user repository
+06 Mar 2020 11:03:15,355 INFO  ubb.tourism.Application 56 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 11:03:15,730 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 36 size - Getting size of user repository
+06 Mar 2020 11:03:15,746 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 52 save - Saving new user with username username
+06 Mar 2020 11:03:15,809 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 36 size - Getting size of user repository
+06 Mar 2020 11:03:15,824 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 96 findOne - Getting user with userId 10
+06 Mar 2020 11:03:15,824 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 67 update - Updating user with userId 10
+06 Mar 2020 11:03:15,918 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 96 findOne - Getting user with userId 10
+06 Mar 2020 11:03:15,918 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 83 delete - Deleting user with userId 10
+06 Mar 2020 11:03:16,059 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 36 size - Getting size of user repository
+06 Mar 2020 11:07:14,333 INFO  ubb.tourism.Application 56 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 11:07:14,687 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
+06 Mar 2020 11:07:14,703 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 55 save - Saving new user with username username
+06 Mar 2020 11:07:14,787 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
+06 Mar 2020 11:07:14,787 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 99 findOne - Getting user with userId 11
+06 Mar 2020 11:07:14,787 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 70 update - Updating user with userId 11
+06 Mar 2020 11:07:14,903 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 99 findOne - Getting user with userId 11
+06 Mar 2020 11:07:14,903 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 86 delete - Deleting user with userId 11
+06 Mar 2020 11:07:15,050 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
+06 Mar 2020 11:08:29,201 INFO  ubb.tourism.Application 56 getProperties - MySQL properties have been loaded successfully
+06 Mar 2020 11:08:29,560 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
+06 Mar 2020 11:08:29,576 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 55 save - Saving new user with username username
+06 Mar 2020 11:08:29,701 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
+06 Mar 2020 11:08:29,716 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 99 findOne - Getting user with userId 12
+06 Mar 2020 11:08:29,716 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 70 update - Updating user with userId 12
+06 Mar 2020 11:08:29,795 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 99 findOne - Getting user with userId 12
+06 Mar 2020 11:08:29,810 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 86 delete - Deleting user with userId 12
+06 Mar 2020 11:08:29,966 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
