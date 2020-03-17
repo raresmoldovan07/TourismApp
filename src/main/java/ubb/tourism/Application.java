@@ -2,13 +2,17 @@ package ubb.tourism;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ubb.tourism.data.access.entity.User;
+import ubb.tourism.data.access.entity.Flight;
+import ubb.tourism.data.access.entity.Ticket;
+import ubb.tourism.data.access.repository.FlightRepository;
 import ubb.tourism.data.access.repository.UserRepository;
+import ubb.tourism.data.access.repository.impl.FlightRepositoryImpl;
+import ubb.tourism.data.access.repository.impl.TicketRepositoryImpl;
 import ubb.tourism.data.access.repository.impl.UserRepositoryImpl;
 import ubb.tourism.data.access.utils.JdbcUtils;
-import ubb.tourism.data.validator.impl.UserValidator;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Properties;
 
 public class Application {
@@ -22,27 +26,11 @@ public class Application {
     private static void testSize() {
         Properties properties = getProperties();
         JdbcUtils jdbcUtils = new JdbcUtils(properties);
-        UserValidator userValidator = new UserValidator();
-        UserRepository userRepository = new UserRepositoryImpl(jdbcUtils, userValidator);
-        System.out.println(String.format("Size of user repository is %s", userRepository.size()));
-        int id = 12;
-
-        User user = new User("username", "password", "name");
-
-        userRepository.save(user);
-        System.out.println(String.format("Size of user repository is %s", userRepository.size()));
-
-        user = userRepository.findOne(id);
-        System.out.println("Saved user: " + user);
-
-        user.setName("NewName");
-        userRepository.update(id, user);
-
-        user = userRepository.findOne(id);
-        System.out.println("New user: " + user);
-
-        userRepository.delete(id);
-        System.out.println(String.format("Size of user repository is %s", userRepository.size()));
+        UserRepository userRepository = new UserRepositoryImpl(jdbcUtils);
+        FlightRepository flightRepository = new FlightRepositoryImpl(jdbcUtils);
+        List<Flight> flightList = (List<Flight>) flightRepository.findAll();
+        TicketRepositoryImpl ticketRepository = new TicketRepositoryImpl(jdbcUtils);
+        List<Ticket> ticketList = (List<Ticket>) ticketRepository.findAll();
     }
 
     private static Properties getProperties() {

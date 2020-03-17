@@ -26,11 +26,9 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String SIZE_QUERY = "select count(*) as SIZE from user;";
 
     private JdbcUtils jdbcUtils;
-    private Validator<User> validator;
 
-    public UserRepositoryImpl(JdbcUtils jdbcUtils, Validator<User> validator) {
+    public UserRepositoryImpl(JdbcUtils jdbcUtils) {
         this.jdbcUtils = jdbcUtils;
-        this.validator = validator;
     }
 
     @Override

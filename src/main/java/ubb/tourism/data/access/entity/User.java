@@ -2,13 +2,13 @@ package ubb.tourism.data.access.entity;
 
 public class User implements Entity<Integer> {
 
-    private Integer userId;
+    private Integer id;
     private String username;
     private String password;
     private String name;
 
-    public User(Integer userId, String username, String password, String name) {
-        this.userId = userId;
+    public User(Integer id, String username, String password, String name) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -22,16 +22,16 @@ public class User implements Entity<Integer> {
 
     @Override
     public Integer getId() {
-        return userId;
+        return id;
     }
 
     @Override
     public void setId(Integer userId) {
-        this.userId = userId;
+        this.id = userId;
     }
 
     public Integer getUserId() {
-        return userId;
+        return id;
     }
 
     public String getUsername() {
@@ -47,7 +47,7 @@ public class User implements Entity<Integer> {
     }
 
     public void setUserId(Integer userId) {
-        this.userId = userId;
+        this.id = userId;
     }
 
     public void setUsername(String username) {
@@ -65,7 +65,7 @@ public class User implements Entity<Integer> {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId=" + id +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", name='" + name + '\'' +

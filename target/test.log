@@ -144,3 +144,12 @@ java.sql.SQLException: No value specified for parameter 2
 06 Mar 2020 11:08:29,795 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 99 findOne - Getting user with userId 12
 06 Mar 2020 11:08:29,810 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 86 delete - Deleting user with userId 12
 06 Mar 2020 11:08:29,966 INFO  ubb.tourism.data.access.repository.impl.UserRepositoryImpl 39 size - Getting size of user repository
+17 Mar 2020 23:55:41,353 INFO  ubb.tourism.Application 65 getProperties - MySQL properties have been loaded successfully
+17 Mar 2020 23:55:52,153 INFO  ubb.tourism.data.access.repository.impl.FlightRepositoryImpl 122 findAll - Getting all tickets
+18 Mar 2020 00:00:23,918 INFO  ubb.tourism.Application 65 getProperties - MySQL properties have been loaded successfully
+18 Mar 2020 00:00:28,465 INFO  ubb.tourism.data.access.repository.impl.FlightRepositoryImpl 122 findAll - Getting all tickets
+18 Mar 2020 00:00:45,428 INFO  ubb.tourism.data.access.repository.impl.TicketRepositoryImpl 120 findAll - Getting all tickets
+18 Mar 2020 00:02:56,452 INFO  ubb.tourism.Application 67 getProperties - MySQL properties have been loaded successfully
+18 Mar 2020 00:02:56,714 INFO  ubb.tourism.data.access.repository.impl.FlightRepositoryImpl 122 findAll - Getting all tickets
+18 Mar 2020 00:02:56,730 INFO  ubb.tourism.data.access.repository.impl.TicketRepositoryImpl 120 findAll - Getting all tickets
+18 Mar 2020 00:02:56,754 INFO  ubb.tourism.data.access.repository.impl.FlightRepositoryImpl 54 save - Saving new flight
