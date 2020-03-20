@@ -57,4 +57,15 @@ public class Ticket implements Entity<Integer> {
     public void setTourists(String tourists) {
         this.tourists = tourists;
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", availableSpots=" + availableSpots +
+                ", clientName='" + clientName + '\'' +
+                ", clientAddress='" + clientAddress + '\'' +
+                ", tourists='" + tourists + '\'' +
+                '}';
+    }
 }

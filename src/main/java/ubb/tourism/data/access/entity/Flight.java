@@ -59,4 +59,15 @@ public class Flight implements Entity<Integer> {
     public void setFlightDateTime(LocalDateTime flightDateTime) {
         this.flightDateTime = flightDateTime;
     }
+
+    @Override
+    public String toString() {
+        return "Flight{" +
+                "id=" + id +
+                ", destination='" + destination + '\'' +
+                ", airport='" + airport + '\'' +
+                ", flightDateTime=" + flightDateTime +
+                ", availableSpots=" + availableSpots +
+                '}';
+    }
 }
