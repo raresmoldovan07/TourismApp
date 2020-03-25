@@ -26,7 +26,18 @@
         <constructor-arg ref="userRepository"/>
     </bean>
 
+    <bean id="flightService" class="ubb.tourism.business.service.FlightService">
+        <constructor-arg ref="flightRepository"/>
+    </bean>
+
+    <bean id="ticketService" class="ubb.tourism.business.service.TicketService">
+        <constructor-arg ref="ticketRepository"/>
+    </bean>
+
     <bean id="loginController" class="ubb.tourism.controller.LoginController">
+        <constructor-arg ref="flightService"/>
+        <constructor-arg ref="ticketService"/>
         <constructor-arg ref="userService"/>
     </bean>
+
 </beans>

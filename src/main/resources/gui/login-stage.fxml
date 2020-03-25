@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="700.0" prefWidth="1300.0" style="-fx-background-color: #add8e6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.tourism.controller.LoginController">
    <children>
-      <Label layoutX="549.0" layoutY="118.0" prefHeight="98.0" prefWidth="203.0" text="TourismApp" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="549.0" AnchorPane.rightAnchor="548.0">
+      <Label layoutX="549.0" layoutY="181.0" prefHeight="98.0" prefWidth="203.0" text="TourismApp" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="549.0" AnchorPane.rightAnchor="548.0">
          <font>
             <Font name="Bell MT Bold" size="36.0" />
          </font>

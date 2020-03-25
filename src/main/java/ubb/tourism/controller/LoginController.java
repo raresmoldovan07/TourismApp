@@ -7,6 +7,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import ubb.tourism.business.exception.UserNotFoundException;
+import ubb.tourism.business.service.FlightService;
+import ubb.tourism.business.service.TicketService;
 import ubb.tourism.data.access.entity.User;
 import ubb.tourism.business.service.UserService;
 
@@ -21,9 +23,13 @@ public class LoginController {
     @FXML
     public Label failedAuthenticationLabel;
 
+    private FlightService flightService;
+    private TicketService ticketService;
     private UserService userService;
 
-    public LoginController(UserService userService) {
+    public LoginController(FlightService flightService, TicketService ticketService, UserService userService) {
+        this.flightService = flightService;
+        this.ticketService = ticketService;
         this.userService = userService;
     }
 

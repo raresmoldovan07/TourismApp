@@ -3,7 +3,7 @@ package ubb.tourism.data.access.repository.impl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ubb.tourism.data.access.entity.Ticket;
-import ubb.tourism.data.access.repository.CrudRepository;
+import ubb.tourism.data.access.repository.TicketRepository;
 import ubb.tourism.data.access.utils.JdbcUtils;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TicketRepositoryImpl implements CrudRepository<Integer, Ticket> {
+public class TicketRepositoryImpl implements TicketRepository {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
