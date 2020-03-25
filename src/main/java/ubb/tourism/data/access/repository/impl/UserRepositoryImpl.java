@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import ubb.tourism.data.access.entity.User;
 import ubb.tourism.data.access.repository.UserRepository;
 import ubb.tourism.data.access.utils.JdbcUtils;
-import ubb.tourism.data.validator.Validator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -24,6 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String DELETE_QUERY = "delete from user where user_id = ?;";
     private static final String SAVE_QUERY = "insert into user (username, name, password) values (?, ?, ?);";
     private static final String SIZE_QUERY = "select count(*) as SIZE from user;";
+    private static final String GET_USER_BY_USERNAME_AND_PASSWORD_QUERY = "select * from user where username=? and password=?";
 
     private JdbcUtils jdbcUtils;
 
@@ -100,10 +100,7 @@ public class UserRepositoryImpl implements UserRepository {
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                String name = resultSet.getString("name");
-                return new User(userId, username, password, name);
+                return getUserFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting user with userId {}", userId, e);
@@ -120,11 +117,7 @@ public class UserRepositoryImpl implements UserRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Integer userId = resultSet.getInt("user_id");
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                String name = resultSet.getString("name");
-                users.add(new User(userId, username, password, name));
+                users.add(getUserFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting all users", e);
@@ -134,6 +127,32 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
+        Connection connection = jdbcUtils.getConnection();
+        LOGGER.info("Getting user with username {}", username);
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_USERNAME_AND_PASSWORD_QUERY);
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return getUserFromResultSet(resultSet);
+            }
+        } catch (SQLException e) {
+            LOGGER.error("Error getting user with username {}", username);
+        }
+        return null;
+    }
+
+    private User getUserFromResultSet(ResultSet resultSet) {
+        try {
+            Integer userId = resultSet.getInt("user_id");
+            String name = resultSet.getString("name");
+            String username = resultSet.getString("username");
+            String password = resultSet.getString("password");
+            return new User(userId, username, password, name);
+        } catch (SQLException e) {
+            LOGGER.error("Error mapping resultSet to user");
+        }
         return null;
     }
 }

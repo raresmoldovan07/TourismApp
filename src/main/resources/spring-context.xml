@@ -22,4 +22,11 @@
         <constructor-arg ref="jdbcUtils"/>
     </bean>
 
+    <bean id="userService" class="ubb.tourism.business.service.UserService">
+        <constructor-arg ref="userRepository"/>
+    </bean>
+
+    <bean id="loginController" class="ubb.tourism.controller.LoginController">
+        <constructor-arg ref="userService"/>
+    </bean>
 </beans>
