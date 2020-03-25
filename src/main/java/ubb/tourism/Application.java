@@ -6,6 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import ubb.tourism.controller.HomeController;
 import ubb.tourism.controller.LoginController;
 
 public class Application extends javafx.application.Application {
@@ -19,11 +20,12 @@ public class Application extends javafx.application.Application {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-context.xml");
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setLocation(getClass().getResource("/gui/login-stage.fxml"));
-        fxmlLoader.setControllerFactory(c -> applicationContext.getBean(LoginController.class));
+        fxmlLoader.setLocation(getClass().getResource("/gui/home-stage.fxml"));
+        fxmlLoader.setControllerFactory(c -> applicationContext.getBean(HomeController.class));
         AnchorPane anchorPane = fxmlLoader.load();
 
         primaryStage.setTitle("TourismApp");
+        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(anchorPane));
         primaryStage.show();
     }

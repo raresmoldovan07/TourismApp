@@ -119,7 +119,7 @@ public class FlightRepositoryImpl implements FlightRepository {
     public Iterable<Flight> findAll() {
         Connection connection = jdbcUtils.getConnection();
         List<Flight> flights = new ArrayList<>();
-        LOGGER.info("Getting all tickets");
+        LOGGER.info("Getting all flights");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();

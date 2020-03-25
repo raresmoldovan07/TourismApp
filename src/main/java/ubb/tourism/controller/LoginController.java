@@ -1,6 +1,7 @@
 package ubb.tourism.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -12,7 +13,10 @@ import ubb.tourism.business.service.TicketService;
 import ubb.tourism.data.access.entity.User;
 import ubb.tourism.business.service.UserService;
 
-public class LoginController {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LoginController implements Initializable {
 
     @FXML
     public TextField usernameTextField;
@@ -26,6 +30,11 @@ public class LoginController {
     private FlightService flightService;
     private TicketService ticketService;
     private UserService userService;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     public LoginController(FlightService flightService, TicketService ticketService, UserService userService) {
         this.flightService = flightService;
