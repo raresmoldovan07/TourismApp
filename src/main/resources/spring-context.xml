@@ -7,7 +7,7 @@
         <constructor-arg>
             <bean class="java.util.Properties"/>
         </constructor-arg>
-        <property name="propertiesFileName" value="config/mysql-config.properties"/>
+        <constructor-arg value="config/mysql-config.properties"/>
     </bean>
 
     <bean id="userRepository" class="ubb.tourism.data.access.repository.impl.UserRepositoryImpl">

@@ -19,14 +19,12 @@ public class JdbcUtils {
 
     private String propertiesFileName;
 
-    public JdbcUtils(Properties properties) {
+    public JdbcUtils(Properties properties, String propertiesFileName) {
         this.properties = properties;
-    }
-
-    public void setPropertiesFileName(String propertiesFileName) {
         this.propertiesFileName = propertiesFileName;
         loadProperties();
     }
+
 
     public Connection getConnection() {
         try {
