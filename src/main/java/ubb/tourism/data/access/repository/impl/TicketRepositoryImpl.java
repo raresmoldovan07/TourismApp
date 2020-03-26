@@ -19,9 +19,9 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     private static final String FIND_ALL_QUERY = "select * from ticket;";
     private static final String FIND_ONE_QUERY = "select * from ticket where ticket_id = ?;";
-    private static final String UPDATE_QUERY = "update ticket set available_spots=?, client_name=?, client_address=?, tourists=? where ticket_id = ?;";
+    private static final String UPDATE_QUERY = "update ticket set flight_id=?, spots=?, client_name=?, client_address=?, tourists=? where ticket_id = ?;";
     private static final String DELETE_QUERY = "delete from ticket where ticket_id = ?;";
-    private static final String SAVE_QUERY = "insert into ticket (available_spots, client_name, client_address, tourists) values (?, ?, ?, ?);";
+    private static final String SAVE_QUERY = "insert into ticket (flight_id, spots, client_name, client_address, tourists) values (?, ?, ?, ?, ?);";
     private static final String SIZE_QUERY = "select count(*) as size from ticket;";
 
     private JdbcUtils jdbcUtils;
@@ -52,10 +52,7 @@ public class TicketRepositoryImpl implements TicketRepository {
         LOGGER.info("Saving new ticket");
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY);
-            preparedStatement.setInt(1, ticket.getAvailableSpots());
-            preparedStatement.setString(2, ticket.getClientName());
-            preparedStatement.setString(3, ticket.getClientAddress());
-            preparedStatement.setString(4, ticket.getTourists());
+            setTicketFieldsInPreparedStatement(preparedStatement, ticket);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Error saving new ticket", e);
@@ -68,11 +65,8 @@ public class TicketRepositoryImpl implements TicketRepository {
         LOGGER.info("Updating ticket with ticketId {}", ticketId);
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
-            preparedStatement.setInt(1, ticket.getAvailableSpots());
-            preparedStatement.setString(2, ticket.getClientName());
-            preparedStatement.setString(3, ticket.getClientAddress());
-            preparedStatement.setString(4, ticket.getTourists());
-            preparedStatement.setInt(5, ticketId);
+            setTicketFieldsInPreparedStatement(preparedStatement, ticket);
+            preparedStatement.setInt(6, ticketId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             LOGGER.error("Error updating ticket with ticketId {}", ticketId, e);
@@ -101,11 +95,7 @@ public class TicketRepositoryImpl implements TicketRepository {
             preparedStatement.setInt(1, ticketId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                Integer availableSpots = resultSet.getInt("available_spots");
-                String clientName = resultSet.getString("client_name");
-                String clientAddress = resultSet.getString("client_address");
-                String tourists = resultSet.getString("tourists");
-                return new Ticket(ticketId, availableSpots, clientName, clientAddress, tourists);
+                return getTicketFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting ticket with ticketId {}", ticketId, e);
@@ -122,16 +112,38 @@ public class TicketRepositoryImpl implements TicketRepository {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Integer ticketId = resultSet.getInt("ticket_id");
-                Integer availableSpots = resultSet.getInt("available_spots");
-                String clientName = resultSet.getString("client_name");
-                String clientAddress = resultSet.getString("client_address");
-                String tourists = resultSet.getString("tourists");
-                tickets.add(new Ticket(ticketId, availableSpots, clientName, clientAddress, tourists));
+                tickets.add(getTicketFromResultSet(resultSet));
             }
         } catch (SQLException e) {
             LOGGER.error("Error getting all tickets", e);
         }
         return tickets;
+    }
+
+    private Ticket getTicketFromResultSet(ResultSet resultSet) {
+        try {
+            Integer ticketId = resultSet.getInt("ticket_id");
+            Integer flightId = resultSet.getInt("flight_id");
+            Integer spots = resultSet.getInt("spots");
+            String clientName = resultSet.getString("client_name");
+            String clientAddress = resultSet.getString("client_address");
+            String tourists = resultSet.getString("tourists");
+            return new Ticket(ticketId, flightId, spots, clientName, clientAddress, tourists);
+        } catch (SQLException e) {
+            LOGGER.error("Error getting ticket from resultSet");
+        }
+        return null;
+    }
+
+    private void setTicketFieldsInPreparedStatement(PreparedStatement preparedStatement, Ticket ticket) {
+        try {
+            preparedStatement.setInt(1, ticket.getFlightId());
+            preparedStatement.setInt(2, ticket.getSpots());
+            preparedStatement.setString(3, ticket.getClientName());
+            preparedStatement.setString(4, ticket.getClientAddress());
+            preparedStatement.setString(5, ticket.getTourists());
+        } catch (SQLException e) {
+            LOGGER.error("Error setting ticket fields in prepared statement");
+        }
     }
 }

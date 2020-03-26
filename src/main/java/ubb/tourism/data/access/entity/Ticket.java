@@ -3,14 +3,16 @@ package ubb.tourism.data.access.entity;
 public class Ticket implements Entity<Integer> {
 
     private Integer id;
-    private Integer availableSpots;
+    private Integer flightId;
+    private Integer spots;
     private String clientName;
     private String clientAddress;
     private String tourists;
 
-    public Ticket(Integer id, Integer availableSpots, String clientName, String clientAddress, String tourists) {
+    public Ticket(Integer id, Integer flightId, Integer spots, String clientName, String clientAddress, String tourists) {
         this.id = id;
-        this.availableSpots = availableSpots;
+        this.flightId = flightId;
+        this.spots = spots;
         this.clientName = clientName;
         this.clientAddress = clientAddress;
         this.tourists = tourists;
@@ -26,12 +28,20 @@ public class Ticket implements Entity<Integer> {
         this.id = id;
     }
 
-    public Integer getAvailableSpots() {
-        return availableSpots;
+    public Integer getFlightId() {
+        return flightId;
     }
 
-    public void setAvailableSpots(Integer availableSpots) {
-        this.availableSpots = availableSpots;
+    public void setFlightId(Integer flightId) {
+        this.flightId = flightId;
+    }
+
+    public Integer getSpots() {
+        return spots;
+    }
+
+    public void setSpots(Integer spots) {
+        this.spots = spots;
     }
 
     public String getClientName() {
@@ -62,7 +72,8 @@ public class Ticket implements Entity<Integer> {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", availableSpots=" + availableSpots +
+                ", flightId=" + flightId +
+                ", spots=" + spots +
                 ", clientName='" + clientName + '\'' +
                 ", clientAddress='" + clientAddress + '\'' +
                 ", tourists='" + tourists + '\'' +
