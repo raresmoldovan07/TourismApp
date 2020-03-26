@@ -57,20 +57,30 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="clientNameTextField2" editable="false" layoutX="15.0" layoutY="116.0" prefHeight="30.0" prefWidth="270.0" promptText="Select destination from table">
+            <TextField fx:id="destinationTextField" editable="false" layoutX="15.0" layoutY="116.0" prefHeight="30.0" prefWidth="270.0" promptText="Select destination from table">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <TextField fx:id="quantityTextField" layoutX="15.0" layoutY="254.0" prefHeight="30.0" prefWidth="135.0" promptText="Enter quantity">
+            <TextField fx:id="quantityTextField" layoutX="17.0" layoutY="297.0" prefHeight="30.0" prefWidth="135.0" promptText="Enter quantity">
                <font>
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="confirmTicketsButton" layoutX="83.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#confirmTicketsButtonOnMouseClicked" prefHeight="25.0" prefWidth="135.0" text="Confirm tickets" />
-            <Label fx:id="invalidQuantityLabel" layoutX="193.0" layoutY="261.0" prefHeight="17.0" prefWidth="92.0" text="Invalid quantity" textFill="RED" visible="false">
+            <Button fx:id="confirmTicketsButton" disable="true" layoutX="85.0" layoutY="350.0" mnemonicParsing="false" onMouseClicked="#confirmTicketsButtonOnMouseClicked" prefHeight="25.0" prefWidth="135.0" text="Confirm tickets" />
+            <Label fx:id="invalidQuantityLabel" layoutX="193.0" layoutY="304.0" prefHeight="17.0" prefWidth="92.0" text="Invalid quantity" textFill="RED" visible="false">
                <font>
                   <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <TextField fx:id="touristsTextField" layoutX="15.0" layoutY="251.0" prefHeight="30.0" prefWidth="270.0" promptText="Enter tourists' names">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </TextField>
+            <Label layoutX="15.0" layoutY="78.0" prefHeight="17.0" prefWidth="120.0" text="Buy tickets">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="18.0" />
                </font>
             </Label>
          </children>

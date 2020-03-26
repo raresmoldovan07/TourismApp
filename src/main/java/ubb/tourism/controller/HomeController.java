@@ -13,6 +13,7 @@ import ubb.tourism.business.service.TicketService;
 import ubb.tourism.business.service.UserService;
 import ubb.tourism.controller.model.FlightSummary;
 import ubb.tourism.data.access.entity.Flight;
+import ubb.tourism.data.access.entity.Ticket;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ import java.util.ResourceBundle;
 import java.util.stream.StreamSupport;
 
 public class HomeController implements Initializable {
+
     @FXML
     public TableColumn<Flight, String> destinationColumn;
     @FXML
@@ -50,13 +52,15 @@ public class HomeController implements Initializable {
     @FXML
     public TextField clientAddressTextField;
     @FXML
-    public TextField clientNameTextField2;
-    @FXML
     public TextField quantityTextField;
     @FXML
     public Button confirmTicketsButton;
     @FXML
     public Label invalidQuantityLabel;
+    @FXML
+    public TextField destinationTextField;
+    @FXML
+    public TextField touristsTextField;
 
     private ObservableList<Flight> tableViewModelGrade;
     private ObservableList<FlightSummary> searchTableViewModelGrade;
@@ -77,7 +81,27 @@ public class HomeController implements Initializable {
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
         loadFlightTable();
+        handleFlightTableSelection();
         handleSearchFlightTextField();
+        handleQuantityTextField();
+    }
+
+    public void confirmTicketsButtonOnMouseClicked(MouseEvent mouseEvent) {
+        String clientName = clientNameTextField.getText();
+        String clientAddress = clientAddressTextField.getText();
+        String tourists = touristsTextField.getText();
+        Integer quantity = Integer.parseInt(quantityTextField.getText());
+        Integer flightId = flightTableView.getSelectionModel().getSelectedItem().getId();
+        ticketService.save(new Ticket(0, flightId, quantity, clientName, clientAddress, tourists));
+
+        Flight flight = flightTableView.getSelectionModel().getSelectedItem();
+        flight.setAvailableSpots(flight.getAvailableSpots() - quantity);
+        flightService.update(flightId, flight);
+        loadFlightTable();
+    }
+
+    public void selectDateEvent(ActionEvent actionEvent) {
+        loadSearchFlightTable();
     }
 
     private void loadFlightTable() {
@@ -88,16 +112,28 @@ public class HomeController implements Initializable {
         spotsColumn.setCellValueFactory(new PropertyValueFactory<>("availableSpots"));
         flightTableView.setItems(tableViewModelGrade);
         flightTableView.getSortOrder().add(timeColumn);
+        flightTableView.getSelectionModel().clearSelection();
+    }
+
+    private void handleFlightTableSelection() {
+        flightTableView.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
+            if (newValue == null) {
+                return;
+            }
+            clientNameTextField.clear();
+            clientAddressTextField.clear();
+            touristsTextField.clear();
+            quantityTextField.clear();
+            invalidQuantityLabel.setVisible(false);
+            confirmTicketsButton.setDisable(true);
+            destinationTextField.setText(newValue.getDestination());
+        }));
     }
 
     private void handleSearchFlightTextField() {
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             loadSearchFlightTable();
         });
-    }
-
-    public void selectDateEvent(ActionEvent actionEvent) {
-        loadSearchFlightTable();
     }
 
     private void loadSearchFlightTable() {
@@ -123,6 +159,20 @@ public class HomeController implements Initializable {
         searchTableView.setItems(searchTableViewModelGrade);
     }
 
-    public void confirmTicketsButtonOnMouseClicked(MouseEvent mouseEvent) {
+    private void handleQuantityTextField() {
+        quantityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            invalidQuantityLabel.setVisible(false);
+            confirmTicketsButton.setDisable(true);
+            try {
+                int quantity = Integer.parseInt(newValue);
+                if (quantity > flightTableView.getSelectionModel().getSelectedItem().getAvailableSpots()) {
+                    invalidQuantityLabel.setVisible(true);
+                } else {
+                    confirmTicketsButton.setDisable(false);
+                }
+            } catch (NumberFormatException e) {
+                invalidQuantityLabel.setVisible(true);
+            }
+        });
     }
 }

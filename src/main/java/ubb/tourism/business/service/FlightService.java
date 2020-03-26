@@ -11,6 +11,10 @@ public class FlightService {
         this.flightRepository = flightRepository;
     }
 
+    public void update(Integer id, Flight flight) {
+        flightRepository.update(id, flight);
+    }
+
     public Iterable<Flight> findAll() {
         return flightRepository.findAll();
     }
