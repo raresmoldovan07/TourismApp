@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #add8e6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.tourism.controller.LoginController">
+<AnchorPane prefHeight="700.0" prefWidth="1200.0" style="-fx-background-color: #404040;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ubb.tourism.controller.LoginController">
    <children>
       <Label layoutX="496.0" layoutY="181.0" prefHeight="98.0" prefWidth="208.0" text="TourismApp" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="496.0" AnchorPane.rightAnchor="496.0">
          <font>

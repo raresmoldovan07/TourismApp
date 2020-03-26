@@ -5,11 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import ubb.tourism.business.service.FlightService;
 import ubb.tourism.business.service.TicketService;
 import ubb.tourism.business.service.UserService;
@@ -21,7 +19,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.StreamSupport;
 
@@ -48,6 +45,18 @@ public class HomeController implements Initializable {
     public TextField searchTextField;
     @FXML
     public DatePicker searchDatePicker;
+    @FXML
+    public TextField clientNameTextField;
+    @FXML
+    public TextField clientAddressTextField;
+    @FXML
+    public TextField clientNameTextField2;
+    @FXML
+    public TextField quantityTextField;
+    @FXML
+    public Button confirmTicketsButton;
+    @FXML
+    public Label invalidQuantityLabel;
 
     private ObservableList<Flight> tableViewModelGrade;
     private ObservableList<FlightSummary> searchTableViewModelGrade;
@@ -78,6 +87,7 @@ public class HomeController implements Initializable {
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("flightDateTime"));
         spotsColumn.setCellValueFactory(new PropertyValueFactory<>("availableSpots"));
         flightTableView.setItems(tableViewModelGrade);
+        flightTableView.getSortOrder().add(timeColumn);
     }
 
     private void handleSearchFlightTextField() {
@@ -94,7 +104,7 @@ public class HomeController implements Initializable {
 
         searchTableViewModelGrade.clear();
 
-        if(searchDatePicker.getValue() == null || searchTextField.getText().equals("")) {
+        if (searchDatePicker.getValue() == null || searchTextField.getText().equals("")) {
             return;
         }
 
@@ -109,6 +119,10 @@ public class HomeController implements Initializable {
         searchAirportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
         searchTimeColumn.setCellValueFactory(new PropertyValueFactory<>("schedule"));
         searchSpotsColumn.setCellValueFactory(new PropertyValueFactory<>("availableSpots"));
+        searchTableView.getSortOrder().add(searchTimeColumn);
         searchTableView.setItems(searchTableViewModelGrade);
+    }
+
+    public void confirmTicketsButtonOnMouseClicked(MouseEvent mouseEvent) {
     }
 }
