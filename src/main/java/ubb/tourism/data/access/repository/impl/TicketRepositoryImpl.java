@@ -32,9 +32,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public int size() {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting size of ticket repository");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SIZE_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -48,9 +47,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void save(Ticket ticket) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Saving new ticket");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY);
             setTicketFieldsInPreparedStatement(preparedStatement, ticket);
             preparedStatement.executeUpdate();
@@ -61,9 +59,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void update(Integer ticketId, Ticket ticket) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Updating ticket with ticketId {}", ticketId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             setTicketFieldsInPreparedStatement(preparedStatement, ticket);
             preparedStatement.setInt(6, ticketId);
@@ -75,9 +72,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public void delete(Integer ticketId) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Deleting ticket with ticketId {}", ticketId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             preparedStatement.setInt(1, ticketId);
             preparedStatement.executeUpdate();
@@ -88,9 +84,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public Ticket findOne(Integer ticketId) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting ticket with ticketId {}", ticketId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ONE_QUERY);
             preparedStatement.setInt(1, ticketId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -105,10 +100,9 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public Iterable<Ticket> findAll() {
-        Connection connection = jdbcUtils.getConnection();
         List<Ticket> tickets = new ArrayList<>();
         LOGGER.info("Getting all tickets");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

@@ -34,9 +34,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public int size() {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting size of flight repository");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SIZE_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -50,9 +49,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void save(Flight flight) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Saving new flight");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY);
             preparedStatement.setString(1, flight.getDestination());
             preparedStatement.setString(2, flight.getAirport());
@@ -66,9 +64,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void update(Integer flightId, Flight flight) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Updating flight with flightId {}", flightId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, flight.getDestination());
             preparedStatement.setString(2, flight.getAirport());
@@ -83,9 +80,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public void delete(Integer flightId) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Deleting flight with flightId {}", flightId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             preparedStatement.setInt(1, flightId);
             preparedStatement.executeUpdate();
@@ -96,9 +92,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public Flight findOne(Integer flightId) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting flight with flightId {}", flightId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ONE_QUERY);
             preparedStatement.setInt(1, flightId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -117,10 +112,9 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     @Override
     public Iterable<Flight> findAll() {
-        Connection connection = jdbcUtils.getConnection();
         List<Flight> flights = new ArrayList<>();
         LOGGER.info("Getting all flights");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {

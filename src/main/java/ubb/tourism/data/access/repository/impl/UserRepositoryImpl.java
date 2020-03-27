@@ -33,9 +33,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public int size() {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting size of user repository");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SIZE_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
@@ -49,9 +48,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void save(User user) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Saving new user with username {}", user.getUsername());
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getName());
@@ -64,9 +62,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void update(Integer userId, User user) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Updating user with userId {}", userId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_QUERY);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getName());
@@ -80,9 +77,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public void delete(Integer userId) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Deleting user with userId {}", userId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_QUERY);
             preparedStatement.setInt(1, userId);
             preparedStatement.executeUpdate();
@@ -93,9 +89,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findOne(Integer userId) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting user with userId {}", userId);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ONE_QUERY);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -110,10 +105,9 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Iterable<User> findAll() {
-        Connection connection = jdbcUtils.getConnection();
         List<User> users = new ArrayList<>();
         LOGGER.info("Getting all users");
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -127,9 +121,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
-        Connection connection = jdbcUtils.getConnection();
         LOGGER.info("Getting user with username {}", username);
-        try {
+        try (Connection connection = jdbcUtils.getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_USERNAME_AND_PASSWORD_QUERY);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
