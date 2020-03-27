@@ -5,15 +5,18 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import ubb.tourism.business.service.FlightService;
 import ubb.tourism.business.service.TicketService;
 import ubb.tourism.business.service.UserService;
 import ubb.tourism.controller.model.FlightSummary;
 import ubb.tourism.data.access.entity.Flight;
 import ubb.tourism.data.access.entity.Ticket;
+import ubb.tourism.data.access.entity.User;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -61,6 +64,8 @@ public class HomeController implements Initializable {
     public TextField destinationTextField;
     @FXML
     public TextField touristsTextField;
+    @FXML
+    public Button logoutButton;
 
     private ObservableList<Flight> tableViewModelGrade;
     private ObservableList<FlightSummary> searchTableViewModelGrade;
@@ -69,10 +74,13 @@ public class HomeController implements Initializable {
     private TicketService ticketService;
     private UserService userService;
 
-    public HomeController(FlightService flightService, TicketService ticketService, UserService userService) {
+    private User authenticatedUser;
+
+    public HomeController(FlightService flightService, TicketService ticketService, UserService userService, User authenticatedUser) {
         this.flightService = flightService;
         this.ticketService = ticketService;
         this.userService = userService;
+        this.authenticatedUser = authenticatedUser;
         tableViewModelGrade = FXCollections.observableArrayList();
         searchTableViewModelGrade = FXCollections.observableArrayList();
     }
@@ -105,11 +113,18 @@ public class HomeController implements Initializable {
     }
 
     private void loadFlightTable() {
-        tableViewModelGrade.setAll((Collection<? extends Flight>) flightService.findAll());
+
+        tableViewModelGrade.clear();
+
+        StreamSupport.stream(flightService.findAll().spliterator(), false)
+                .filter(p -> p.getAvailableSpots() > 0)
+                .forEach(tableViewModelGrade::add);
+
         destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("flightDateTime"));
         spotsColumn.setCellValueFactory(new PropertyValueFactory<>("availableSpots"));
+
         flightTableView.setItems(tableViewModelGrade);
         flightTableView.getSortOrder().add(timeColumn);
         flightTableView.getSelectionModel().clearSelection();
@@ -161,6 +176,9 @@ public class HomeController implements Initializable {
 
     private void handleQuantityTextField() {
         quantityTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (destinationTextField.getText().equals("")) {
+                return;
+            }
             invalidQuantityLabel.setVisible(false);
             confirmTicketsButton.setDisable(true);
             try {
@@ -174,5 +192,11 @@ public class HomeController implements Initializable {
                 invalidQuantityLabel.setVisible(true);
             }
         });
+    }
+
+    public void logoutButtonOnMouseClicked(MouseEvent mouseEvent) {
+        Node node = (Node) mouseEvent.getSource();
+        Stage stage = (Stage) node.getScene().getWindow();
+        stage.close();
     }
 }
