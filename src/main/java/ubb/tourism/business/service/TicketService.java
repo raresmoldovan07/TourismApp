@@ -1,17 +1,8 @@
 package ubb.tourism.business.service;
 
 import ubb.tourism.data.access.entity.Ticket;
-import ubb.tourism.data.access.repository.TicketRepository;
 
-public class TicketService {
+public interface TicketService {
 
-    private TicketRepository ticketRepository;
-
-    public TicketService(TicketRepository ticketRepository) {
-        this.ticketRepository = ticketRepository;
-    }
-
-    public void save(Ticket ticket) {
-        ticketRepository.save(ticket);
-    }
+    void save(Ticket ticket);
 }

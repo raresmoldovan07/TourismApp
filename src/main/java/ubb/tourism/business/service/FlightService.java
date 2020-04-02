@@ -1,21 +1,10 @@
 package ubb.tourism.business.service;
 
 import ubb.tourism.data.access.entity.Flight;
-import ubb.tourism.data.access.repository.FlightRepository;
 
-public class FlightService {
+public interface FlightService {
 
-    private FlightRepository flightRepository;
+    void update(Integer id, Flight flight);
 
-    public FlightService(FlightRepository flightRepository) {
-        this.flightRepository = flightRepository;
-    }
-
-    public void update(Integer id, Flight flight) {
-        flightRepository.update(id, flight);
-    }
-
-    public Iterable<Flight> findAll() {
-        return flightRepository.findAll();
-    }
+    Iterable<Flight> findAll();
 }

@@ -22,15 +22,15 @@
         <constructor-arg ref="jdbcUtils"/>
     </bean>
 
-    <bean id="userService" class="ubb.tourism.business.service.UserService">
+    <bean id="userService" class="ubb.tourism.business.service.impl.UserServiceImpl">
         <constructor-arg ref="userRepository"/>
     </bean>
 
-    <bean id="flightService" class="ubb.tourism.business.service.FlightService">
+    <bean id="flightService" class="ubb.tourism.business.service.impl.FlightServiceImpl">
         <constructor-arg ref="flightRepository"/>
     </bean>
 
-    <bean id="ticketService" class="ubb.tourism.business.service.TicketService">
+    <bean id="ticketService" class="ubb.tourism.business.service.impl.TicketServiceImpl">
         <constructor-arg ref="ticketRepository"/>
     </bean>
 

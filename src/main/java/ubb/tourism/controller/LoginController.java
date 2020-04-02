@@ -12,10 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import ubb.tourism.business.exception.UserNotFoundException;
-import ubb.tourism.business.service.FlightService;
-import ubb.tourism.business.service.TicketService;
+import ubb.tourism.business.service.impl.FlightServiceImpl;
+import ubb.tourism.business.service.impl.TicketServiceImpl;
 import ubb.tourism.data.access.entity.User;
-import ubb.tourism.business.service.UserService;
+import ubb.tourism.business.service.impl.UserServiceImpl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,16 +32,16 @@ public class LoginController implements Initializable {
     @FXML
     public Label failedAuthenticationLabel;
 
-    private FlightService flightService;
-    private TicketService ticketService;
-    private UserService userService;
+    private FlightServiceImpl flightService;
+    private TicketServiceImpl ticketService;
+    private UserServiceImpl userService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public LoginController(FlightService flightService, TicketService ticketService, UserService userService) {
+    public LoginController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService) {
         this.flightService = flightService;
         this.ticketService = ticketService;
         this.userService = userService;

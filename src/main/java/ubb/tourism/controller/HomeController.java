@@ -10,9 +10,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import ubb.tourism.business.service.FlightService;
-import ubb.tourism.business.service.TicketService;
-import ubb.tourism.business.service.UserService;
+import ubb.tourism.business.service.impl.FlightServiceImpl;
+import ubb.tourism.business.service.impl.TicketServiceImpl;
+import ubb.tourism.business.service.impl.UserServiceImpl;
 import ubb.tourism.controller.model.FlightSummary;
 import ubb.tourism.data.access.entity.Flight;
 import ubb.tourism.data.access.entity.Ticket;
@@ -22,11 +22,10 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Collection;
 import java.util.ResourceBundle;
 import java.util.stream.StreamSupport;
 
-public class HomeController implements Initializable {
+public class HomeController implements Initializable, Observer {
 
     @FXML
     public TableColumn<Flight, String> destinationColumn;
@@ -70,25 +69,34 @@ public class HomeController implements Initializable {
     private ObservableList<Flight> tableViewModelGrade;
     private ObservableList<FlightSummary> searchTableViewModelGrade;
 
-    private FlightService flightService;
-    private TicketService ticketService;
-    private UserService userService;
+    private FlightServiceImpl flightService;
+    private TicketServiceImpl ticketService;
+    private UserServiceImpl userService;
 
     private User authenticatedUser;
 
-    public HomeController(FlightService flightService, TicketService ticketService, UserService userService, User authenticatedUser) {
+    public HomeController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService, User authenticatedUser) {
         this.flightService = flightService;
         this.ticketService = ticketService;
         this.userService = userService;
         this.authenticatedUser = authenticatedUser;
         tableViewModelGrade = FXCollections.observableArrayList();
         searchTableViewModelGrade = FXCollections.observableArrayList();
+        this.flightService.addObserver(this);
+        this.ticketService.addObserver(this);
+        this.userService.addObserver(this);
     }
 
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        update();
+    }
+
+    @Override
+    public void update() {
         loadFlightTable();
+        clearTextFields();
         handleFlightTableSelection();
         handleSearchFlightTextField();
         handleQuantityTextField();
@@ -100,12 +108,11 @@ public class HomeController implements Initializable {
         String tourists = touristsTextField.getText();
         Integer quantity = Integer.parseInt(quantityTextField.getText());
         Integer flightId = flightTableView.getSelectionModel().getSelectedItem().getId();
-        ticketService.save(new Ticket(0, flightId, quantity, clientName, clientAddress, tourists));
-
         Flight flight = flightTableView.getSelectionModel().getSelectedItem();
         flight.setAvailableSpots(flight.getAvailableSpots() - quantity);
+
+        ticketService.save(new Ticket(0, flightId, quantity, clientName, clientAddress, tourists));
         flightService.update(flightId, flight);
-        loadFlightTable();
     }
 
     public void selectDateEvent(ActionEvent actionEvent) {
@@ -115,6 +122,7 @@ public class HomeController implements Initializable {
     private void loadFlightTable() {
 
         tableViewModelGrade.clear();
+        flightTableView.getSelectionModel().clearSelection();
 
         StreamSupport.stream(flightService.findAll().spliterator(), false)
                 .filter(p -> p.getAvailableSpots() > 0)
@@ -192,6 +200,16 @@ public class HomeController implements Initializable {
                 invalidQuantityLabel.setVisible(true);
             }
         });
+    }
+
+    private void clearTextFields() {
+        destinationTextField.setText("");
+        touristsTextField.setText("");
+        clientNameTextField.setText("");
+        clientAddressTextField.setText("");
+        quantityTextField.setText("");
+        searchTextField.setText("");
+        confirmTicketsButton.setDisable(true);
     }
 
     public void logoutButtonOnMouseClicked(MouseEvent mouseEvent) {
