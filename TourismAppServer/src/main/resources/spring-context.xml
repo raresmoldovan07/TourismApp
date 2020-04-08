@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jdbcUtils" class="tourism.app.persistence.data.access.utils.JdbcUtils">
+        <constructor-arg>
+            <bean class="java.util.Properties"/>
+        </constructor-arg>
+        <constructor-arg value="config/mysql-config.properties"/>
+    </bean>
+
+    <bean id="userRepository" class="tourism.app.persistence.data.access.repository.impl.UserRepositoryImpl">
+        <constructor-arg ref="jdbcUtils"/>
+    </bean>
+
+    <bean id="ticketRepository" class="tourism.app.persistence.data.access.repository.impl.TicketRepositoryImpl">
+        <constructor-arg ref="jdbcUtils"/>
+    </bean>
+
+    <bean id="flightRepository" class="tourism.app.persistence.data.access.repository.impl.FlightRepositoryImpl">
+        <constructor-arg ref="jdbcUtils"/>
+    </bean>
+
+    <bean id="tourismAppService" class="tourism.app.server.impl.TourismAppServiceImpl">
+        <constructor-arg ref="userRepository"/>
+        <constructor-arg ref="flightRepository"/>
+        <constructor-arg ref="ticketRepository"/>
+    </bean>
+
+</beans>
