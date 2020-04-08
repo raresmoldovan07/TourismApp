@@ -1,4 +1,4 @@
-package ubb.tourism.data.access.entity;
+package tourism.app.persistence.data.access.entity;
 
 public class Ticket implements Entity<Integer> {
 

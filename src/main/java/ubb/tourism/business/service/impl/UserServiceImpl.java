@@ -3,8 +3,8 @@ package ubb.tourism.business.service.impl;
 import ubb.tourism.business.exception.UserNotFoundException;
 import ubb.tourism.business.service.Observable;
 import ubb.tourism.business.service.UserService;
-import ubb.tourism.data.access.entity.User;
-import ubb.tourism.data.access.repository.UserRepository;
+import tourism.app.persistence.data.access.entity.User;
+import tourism.app.persistence.data.access.repository.UserRepository;
 
 public class UserServiceImpl extends Observable implements UserService {
 

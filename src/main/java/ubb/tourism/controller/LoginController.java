@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import ubb.tourism.business.exception.UserNotFoundException;
 import ubb.tourism.business.service.impl.FlightServiceImpl;
 import ubb.tourism.business.service.impl.TicketServiceImpl;
-import ubb.tourism.data.access.entity.User;
+import tourism.app.persistence.data.access.entity.User;
 import ubb.tourism.business.service.impl.UserServiceImpl;
 
 import java.io.IOException;

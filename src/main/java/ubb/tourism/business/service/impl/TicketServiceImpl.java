@@ -2,8 +2,8 @@ package ubb.tourism.business.service.impl;
 
 import ubb.tourism.business.service.Observable;
 import ubb.tourism.business.service.TicketService;
-import ubb.tourism.data.access.entity.Ticket;
-import ubb.tourism.data.access.repository.TicketRepository;
+import tourism.app.persistence.data.access.entity.Ticket;
+import tourism.app.persistence.data.access.repository.TicketRepository;
 
 public class TicketServiceImpl extends Observable implements TicketService {
 

@@ -1,4 +1,4 @@
-package ubb.tourism.data.access.repository;
+package tourism.app.persistence.data.access.repository;
 
 public interface CrudRepository<ID, T> {
 

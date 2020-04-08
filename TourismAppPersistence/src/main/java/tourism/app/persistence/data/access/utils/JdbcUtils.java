@@ -1,8 +1,7 @@
-package ubb.tourism.data.access.utils;
+package tourism.app.persistence.data.access.utils;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ubb.tourism.Application;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -51,7 +50,7 @@ public class JdbcUtils {
     }
 
     private void loadProperties() {
-        ClassLoader classLoader = Application.class.getClassLoader();
+        ClassLoader classLoader = JdbcUtils.class.getClassLoader();
         try {
             properties.load(classLoader.getResourceAsStream(propertiesFileName));
         } catch (IOException e) {

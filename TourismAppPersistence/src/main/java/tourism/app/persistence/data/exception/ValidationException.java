@@ -1,4 +1,4 @@
-package ubb.tourism.data.exception;
+package tourism.app.persistence.data.exception;
 
 public class ValidationException extends RuntimeException {
 

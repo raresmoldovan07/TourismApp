@@ -1,6 +1,6 @@
 package ubb.tourism.business.service;
 
-import ubb.tourism.data.access.entity.User;
+import tourism.app.persistence.data.access.entity.User;
 
 public interface UserService {
 

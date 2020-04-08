@@ -14,9 +14,9 @@ import ubb.tourism.business.service.impl.FlightServiceImpl;
 import ubb.tourism.business.service.impl.TicketServiceImpl;
 import ubb.tourism.business.service.impl.UserServiceImpl;
 import ubb.tourism.controller.model.FlightSummary;
-import ubb.tourism.data.access.entity.Flight;
-import ubb.tourism.data.access.entity.Ticket;
-import ubb.tourism.data.access.entity.User;
+import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.persistence.data.access.entity.Ticket;
+import tourism.app.persistence.data.access.entity.User;
 
 import java.net.URL;
 import java.time.LocalDate;

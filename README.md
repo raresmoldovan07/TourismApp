@@ -3,8 +3,8 @@ Mai multe agenții de turism folosesc o companie de zbor pentru a transporta cli
 turistice. Agențiile folosesc un sistem soft pentru a cumpăra bilete pentru turiști. Angajații de la agențiile de
 turism folosesc o aplicație desktop cu următoarele funcționalități:
 1. Login. După autentificarea cu success, o nouă fereastră se deschide în care sunt afișate informațiile
-despre zboruri (destinația, data și ora plecării, aeroportul și numărul de locul disponbile).
-2. Căutare. După autentificarea cu succes, angajatul poate căuta un zbor introducând destinația și data
+despre zboruri (destinația, tourism.app.persistence.data și ora plecării, aeroportul și numărul de locul disponbile).
+2. Căutare. După autentificarea cu succes, angajatul poate căuta un zbor introducând destinația și tourism.app.persistence.data
 plecării. Aplicația va afișa în altă lista/alt tablou/etc. toate zborurile pentru aceea destinație, ora plecării
 și numărul de locuri disponibile.
 3. Cumpărare. Angajatul poate cumpara bilete pentru clienți pentru o anumită destinație, la o anumită dată,

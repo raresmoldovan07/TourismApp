@@ -1,6 +1,6 @@
 package ubb.tourism.business.service;
 
-import ubb.tourism.data.access.entity.Flight;
+import tourism.app.persistence.data.access.entity.Flight;
 
 public interface FlightService {
 

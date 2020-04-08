@@ -1,6 +1,6 @@
-package ubb.tourism.data.access.repository;
+package tourism.app.persistence.data.access.repository;
 
-import ubb.tourism.data.access.entity.Flight;
+import tourism.app.persistence.data.access.entity.Flight;
 
 import java.time.LocalDateTime;
 

@@ -1,11 +1,10 @@
-package ubb.tourism.data.access.repository.impl;
+package tourism.app.persistence.data.access.repository.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ubb.tourism.data.access.entity.Flight;
-import ubb.tourism.data.access.entity.Flight;
-import ubb.tourism.data.access.repository.FlightRepository;
-import ubb.tourism.data.access.utils.JdbcUtils;
+import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.persistence.data.access.repository.FlightRepository;
+import tourism.app.persistence.data.access.utils.JdbcUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

@@ -1,6 +1,6 @@
 package ubb.tourism.business.service;
 
-import ubb.tourism.data.access.entity.Ticket;
+import tourism.app.persistence.data.access.entity.Ticket;
 
 public interface TicketService {
 

@@ -2,8 +2,8 @@ package ubb.tourism.business.service.impl;
 
 import ubb.tourism.business.service.FlightService;
 import ubb.tourism.business.service.Observable;
-import ubb.tourism.data.access.entity.Flight;
-import ubb.tourism.data.access.repository.FlightRepository;
+import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.persistence.data.access.repository.FlightRepository;
 
 public class FlightServiceImpl extends Observable implements FlightService {
 
