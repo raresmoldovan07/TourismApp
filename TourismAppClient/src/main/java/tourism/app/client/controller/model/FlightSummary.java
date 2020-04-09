@@ -1,4 +1,4 @@
-package ubb.tourism.controller.model;
+package tourism.app.client.controller.model;
 
 import java.time.LocalTime;
 

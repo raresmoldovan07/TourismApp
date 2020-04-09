@@ -1,4 +1,4 @@
-package ubb.tourism.controller;
+package tourism.app.client.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,11 +11,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import ubb.tourism.business.exception.UserNotFoundException;
-import ubb.tourism.business.service.impl.FlightServiceImpl;
-import ubb.tourism.business.service.impl.TicketServiceImpl;
+import tourism.app.services.TourismAppService;
 import tourism.app.persistence.data.access.entity.User;
-import ubb.tourism.business.service.impl.UserServiceImpl;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,19 +29,15 @@ public class LoginController implements Initializable {
     @FXML
     public Label failedAuthenticationLabel;
 
-    private FlightServiceImpl flightService;
-    private TicketServiceImpl ticketService;
-    private UserServiceImpl userService;
+    private TourismAppService tourismAppService;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
-    public LoginController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService) {
-        this.flightService = flightService;
-        this.ticketService = ticketService;
-        this.userService = userService;
+    public LoginController(TourismAppService tourismAppService) {
+        this.tourismAppService = tourismAppService;
     }
 
     public void signingButtonOnMouseClicked(MouseEvent mouseEvent) {
@@ -52,15 +45,14 @@ public class LoginController implements Initializable {
         String password = passwordTextField.getText();
         User user = null;
         try {
-            user = userService.getUserByUsernameAndPassword(username, password);
-        } catch (UserNotFoundException e) {
+            user = tourismAppService.getUserByUsernameAndPassword(username, password);
+        } catch (RuntimeException e) {
             failedAuthenticationLabel.setVisible(true);
             return;
         }
         usernameTextField.clear();
         passwordTextField.clear();
         openHomePage(user);
-
     }
 
     public void usernameTextFieldOnMouseClicked(MouseEvent mouseEvent) {
@@ -75,7 +67,7 @@ public class LoginController implements Initializable {
     private void openHomePage(User user) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/home-stage.fxml"));
-        fxmlLoader.setControllerFactory(c -> new HomeController(flightService, ticketService, userService, user));
+        fxmlLoader.setControllerFactory(c -> new HomeController(tourismAppService, user));
         AnchorPane anchorPane = null;
         try {
             anchorPane = fxmlLoader.load();

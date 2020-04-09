@@ -1,4 +1,4 @@
-package ubb.tourism.controller;
+package tourism.app.client.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,10 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import ubb.tourism.business.service.impl.FlightServiceImpl;
-import ubb.tourism.business.service.impl.TicketServiceImpl;
-import ubb.tourism.business.service.impl.UserServiceImpl;
-import ubb.tourism.controller.model.FlightSummary;
+import tourism.app.services.TourismAppService;
+import tourism.app.client.controller.model.FlightSummary;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
@@ -25,7 +23,7 @@ import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.stream.StreamSupport;
 
-public class HomeController implements Initializable, Observer {
+public class HomeController implements Initializable {
 
     @FXML
     public TableColumn<Flight, String> destinationColumn;
@@ -69,22 +67,15 @@ public class HomeController implements Initializable, Observer {
     private ObservableList<Flight> tableViewModelGrade;
     private ObservableList<FlightSummary> searchTableViewModelGrade;
 
-    private FlightServiceImpl flightService;
-    private TicketServiceImpl ticketService;
-    private UserServiceImpl userService;
+    private TourismAppService tourismAppService;
 
     private User authenticatedUser;
 
-    public HomeController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService, User authenticatedUser) {
-        this.flightService = flightService;
-        this.ticketService = ticketService;
-        this.userService = userService;
+    public HomeController(TourismAppService tourismAppService, User authenticatedUser) {
         this.authenticatedUser = authenticatedUser;
+        this.tourismAppService = tourismAppService;
         tableViewModelGrade = FXCollections.observableArrayList();
         searchTableViewModelGrade = FXCollections.observableArrayList();
-        this.flightService.addObserver(this);
-        this.ticketService.addObserver(this);
-        this.userService.addObserver(this);
     }
 
     @Override
@@ -93,7 +84,6 @@ public class HomeController implements Initializable, Observer {
         update();
     }
 
-    @Override
     public void update() {
         loadFlightTable();
         clearTextFields();
@@ -102,6 +92,7 @@ public class HomeController implements Initializable, Observer {
         handleQuantityTextField();
     }
 
+    @FXML
     public void confirmTicketsButtonOnMouseClicked(MouseEvent mouseEvent) {
         String clientName = clientNameTextField.getText();
         String clientAddress = clientAddressTextField.getText();
@@ -111,8 +102,8 @@ public class HomeController implements Initializable, Observer {
         Flight flight = flightTableView.getSelectionModel().getSelectedItem();
         flight.setAvailableSpots(flight.getAvailableSpots() - quantity);
 
-        ticketService.save(new Ticket(0, flightId, quantity, clientName, clientAddress, tourists));
-        flightService.update(flightId, flight);
+        tourismAppService.save(new Ticket(0, flightId, quantity, clientName, clientAddress, tourists));
+        tourismAppService.update(flightId, flight);
     }
 
     public void selectDateEvent(ActionEvent actionEvent) {
@@ -124,7 +115,7 @@ public class HomeController implements Initializable, Observer {
         tableViewModelGrade.clear();
         flightTableView.getSelectionModel().clearSelection();
 
-        StreamSupport.stream(flightService.findAll().spliterator(), false)
+        StreamSupport.stream(tourismAppService.findAll().spliterator(), false)
                 .filter(p -> p.getAvailableSpots() > 0)
                 .forEach(tableViewModelGrade::add);
 
@@ -167,7 +158,7 @@ public class HomeController implements Initializable, Observer {
             return;
         }
 
-        StreamSupport.stream(flightService.findAll().spliterator(), false)
+        StreamSupport.stream(tourismAppService.findAll().spliterator(), false)
                 .filter(p -> {
                     LocalDate localDate = p.getFlightDateTime().toLocalDate();
                     return localDate.equals(searchDatePicker.getValue()) && p.getDestination().equals(searchTextField.getText());

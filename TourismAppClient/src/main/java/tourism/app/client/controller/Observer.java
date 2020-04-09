@@ -1,4 +1,4 @@
-package ubb.tourism.controller;
+package tourism.app.client.controller;
 
 public interface Observer {
 

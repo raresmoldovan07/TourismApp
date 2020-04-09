@@ -1,4 +1,4 @@
-package ubb.tourism.business.exception;
+package tourism.app.client.exception;
 
 public class UserNotFoundException extends RuntimeException {
 
