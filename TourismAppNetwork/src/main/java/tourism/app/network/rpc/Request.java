@@ -1,6 +1,8 @@
 package tourism.app.network.rpc;
 
-public class Request {
+import java.io.Serializable;
+
+public class Request implements Serializable {
 
     private RequestType requestType;
     private Object data;

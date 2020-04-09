@@ -10,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 import tourism.app.client.controller.model.FlightSummary;
 import tourism.app.persistence.data.access.entity.Flight;
@@ -23,7 +24,7 @@ import java.time.LocalTime;
 import java.util.ResourceBundle;
 import java.util.stream.StreamSupport;
 
-public class HomeController implements Initializable {
+public class HomeController implements Initializable, Observer {
 
     @FXML
     public TableColumn<Flight, String> destinationColumn;
@@ -69,10 +70,7 @@ public class HomeController implements Initializable {
 
     private TourismAppService tourismAppService;
 
-    private User authenticatedUser;
-
-    public HomeController(TourismAppService tourismAppService, User authenticatedUser) {
-        this.authenticatedUser = authenticatedUser;
+    public HomeController(TourismAppService tourismAppService) {
         this.tourismAppService = tourismAppService;
         tableViewModelGrade = FXCollections.observableArrayList();
         searchTableViewModelGrade = FXCollections.observableArrayList();
@@ -81,9 +79,10 @@ public class HomeController implements Initializable {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        update();
+        //update();
     }
 
+    @Override
     public void update() {
         loadFlightTable();
         clearTextFields();

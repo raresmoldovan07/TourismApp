@@ -1,5 +1,7 @@
 package tourism.app.server.impl;
 
+import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
 import tourism.app.persistence.data.access.repository.FlightRepository;
 import tourism.app.persistence.data.access.repository.TicketRepository;
@@ -26,30 +28,29 @@ public class TourismAppServiceImpl implements TourismAppService {
         loggedUsers = new ConcurrentHashMap<>();
     }
 
+
     @Override
-    public synchronized void login(User user, Observer client) throws ServiceException {
-        User loggedUser = userRepository.getUserByUsernameAndPassword(user.getUsername(), user.getPassword());
-        if (loggedUser == null) {
-            throw new ServiceException("Error authenticating user");
+    public User getUserByUsernameAndPassword(String username, String password, Observer client) throws ServiceException {
+        User user = userRepository.getUserByUsernameAndPassword(username, password);
+        if (user == null) {
+            throw new ServiceException("User not found");
         }
-        if (loggedUsers.get(loggedUser.getId()) != null) {
-            throw new ServiceException("User is already authenticated");
-        }
-        loggedUsers.put(loggedUser.getId(), client);
-        //todo notify logged in user
+        loggedUsers.put(user.getId(), client);
+        return user;
     }
 
     @Override
-    public synchronized void logout(User user, Observer client) throws ServiceException {
-        Observer localClient = loggedUsers.remove(user.getId());
-        if (localClient == null) {
-            throw new ServiceException(String.format("User with userId %s is not logged in", user.getId()));
-        }
-        //todo notify logged out user
+    public Iterable<Flight> findAll() {
+        return null;
     }
 
     @Override
-    public synchronized User[] getLoggedUsers(User user) throws ServiceException {
-        return new User[0];
+    public void save(Ticket ticket) {
+
+    }
+
+    @Override
+    public void update(Integer flightId, Flight flight) {
+
     }
 }

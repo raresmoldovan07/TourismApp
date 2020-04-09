@@ -43,16 +43,17 @@ public class LoginController implements Initializable {
     public void signingButtonOnMouseClicked(MouseEvent mouseEvent) {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
+        HomeController homeController = new HomeController(tourismAppService);
         User user = null;
         try {
-            user = tourismAppService.getUserByUsernameAndPassword(username, password);
+            user = tourismAppService.getUserByUsernameAndPassword(username, password, homeController);
         } catch (RuntimeException e) {
             failedAuthenticationLabel.setVisible(true);
             return;
         }
         usernameTextField.clear();
         passwordTextField.clear();
-        openHomePage(user);
+        openHomePage(homeController);
     }
 
     public void usernameTextFieldOnMouseClicked(MouseEvent mouseEvent) {
@@ -64,10 +65,10 @@ public class LoginController implements Initializable {
         failedAuthenticationLabel.setVisible(false);
     }
 
-    private void openHomePage(User user) {
+    private void openHomePage(HomeController homeController) {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/home-stage.fxml"));
-        fxmlLoader.setControllerFactory(c -> new HomeController(tourismAppService, user));
+        fxmlLoader.setControllerFactory(c -> homeController);
         AnchorPane anchorPane = null;
         try {
             anchorPane = fxmlLoader.load();

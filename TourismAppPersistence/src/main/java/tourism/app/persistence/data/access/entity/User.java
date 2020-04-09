@@ -20,6 +20,10 @@ public class User implements Entity<Integer> {
         this.name = name;
     }
 
+    public User() {
+
+    }
+
     @Override
     public Integer getId() {
         return id;
