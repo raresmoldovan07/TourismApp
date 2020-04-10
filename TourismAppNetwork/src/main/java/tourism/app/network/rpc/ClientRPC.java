@@ -1,7 +1,9 @@
 package tourism.app.network.rpc;
 
 import tourism.app.network.dto.Converter;
+import tourism.app.network.dto.FlightDTO;
 import tourism.app.network.dto.UserDTO;
+import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.User;
 import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
@@ -67,11 +69,25 @@ public class ClientRPC implements Runnable, Observer {
     }
 
     private Response handleRequest(Request request) {
-        Response response = null;
         if (request.getRequestType() == RequestType.LOGIN) {
             return handleLoginRequest(request);
+        } else if (request.getRequestType() == RequestType.GET_ALL_FLIGHTS) {
+            return handleFlightsRequest(request);
         }
         return null;
+    }
+
+    private Response handleFlightsRequest(Request request) {
+        System.out.println("Handling flights request");
+        try {
+            Flight[] flights = tourismAppService.findAll();
+            FlightDTO[] flightDTOS = Converter.getFlightDTOsList(flights);
+            return new Response.Builder().type(ResponseType.GET_ALL_FLIGHTS).data(flightDTOS).build();
+        } catch (ServiceException e) {
+            connected = false;
+            System.out.println(String.format("Error handling flights request %s", e));
+        }
+        return new Response.Builder().type(ResponseType.ERROR).build();
     }
 
     private Response handleLoginRequest(Request request) {

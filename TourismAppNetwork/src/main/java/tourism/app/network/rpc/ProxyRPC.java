@@ -1,6 +1,7 @@
 package tourism.app.network.rpc;
 
 import tourism.app.network.dto.Converter;
+import tourism.app.network.dto.FlightDTO;
 import tourism.app.network.dto.UserDTO;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
@@ -56,7 +57,18 @@ public class ProxyRPC implements TourismAppService {
     }
 
     @Override
-    public Iterable<Flight> findAll() {
+    public Flight[] findAll() {
+        Request req = new Request.Builder().type(RequestType.GET_ALL_FLIGHTS).build();
+        sendRequest(req);
+        Response response = readResponse();
+        if (response.getResponseType() == ResponseType.GET_ALL_FLIGHTS) {
+            return Converter.getFlightsList((FlightDTO[]) response.getData());
+        }
+        if (response.getResponseType() == ResponseType.ERROR) {
+            String err = response.getData().toString();
+            closeConnection();
+            throw new ServiceException(err);
+        }
         return null;
     }
 

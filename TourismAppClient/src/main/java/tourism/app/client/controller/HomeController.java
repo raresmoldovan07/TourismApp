@@ -10,19 +10,20 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import tourism.app.services.Observer;
-import tourism.app.services.TourismAppService;
 import tourism.app.client.controller.model.FlightSummary;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
-import tourism.app.persistence.data.access.entity.User;
+import tourism.app.services.Observer;
+import tourism.app.services.TourismAppService;
 
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.StreamSupport;
 
 public class HomeController implements Initializable, Observer {
 
@@ -79,7 +80,7 @@ public class HomeController implements Initializable, Observer {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        //update();
+        update();
     }
 
     @Override
@@ -114,7 +115,10 @@ public class HomeController implements Initializable, Observer {
         tableViewModelGrade.clear();
         flightTableView.getSelectionModel().clearSelection();
 
-        StreamSupport.stream(tourismAppService.findAll().spliterator(), false)
+        Flight[] flights = tourismAppService.findAll();
+        List<Flight> flightsIterable = new ArrayList<>(Arrays.asList(flights));
+
+        flightsIterable.stream()
                 .filter(p -> p.getAvailableSpots() > 0)
                 .forEach(tableViewModelGrade::add);
 
@@ -157,7 +161,10 @@ public class HomeController implements Initializable, Observer {
             return;
         }
 
-        StreamSupport.stream(tourismAppService.findAll().spliterator(), false)
+        Flight[] flights = tourismAppService.findAll();
+        List<Flight> flightsIterable = new ArrayList<>(Arrays.asList(flights));
+
+        flightsIterable.stream()
                 .filter(p -> {
                     LocalDate localDate = p.getFlightDateTime().toLocalDate();
                     return localDate.equals(searchDatePicker.getValue()) && p.getDestination().equals(searchTextField.getText());

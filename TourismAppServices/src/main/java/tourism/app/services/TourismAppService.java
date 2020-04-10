@@ -9,7 +9,7 @@ public interface TourismAppService {
 
     User getUserByUsernameAndPassword(String username, String password, Observer client) throws ServiceException;
 
-    Iterable<Flight> findAll();
+    Flight[] findAll();
 
     void save(Ticket ticket);
 

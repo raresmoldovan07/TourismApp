@@ -10,6 +10,7 @@ import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 import tourism.app.services.exception.ServiceException;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,8 +41,13 @@ public class TourismAppServiceImpl implements TourismAppService {
     }
 
     @Override
-    public Iterable<Flight> findAll() {
-        return null;
+    public Flight[] findAll() {
+        List<Flight> flightList = (List<Flight>) flightRepository.findAll();
+        Flight[] flights = new Flight[flightList.size()];
+        for (int i = 0; i < flightList.size(); ++i) {
+            flights[i] = flightList.get(i);
+        }
+        return flights;
     }
 
     @Override
