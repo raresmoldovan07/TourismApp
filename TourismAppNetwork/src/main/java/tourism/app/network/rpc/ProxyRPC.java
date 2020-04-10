@@ -2,6 +2,7 @@ package tourism.app.network.rpc;
 
 import tourism.app.network.dto.Converter;
 import tourism.app.network.dto.FlightDTO;
+import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
@@ -74,12 +75,29 @@ public class ProxyRPC implements TourismAppService {
 
     @Override
     public void save(Ticket ticket) {
-
+        TicketDTO ticketDTO = Converter.getTicketDTO(ticket);
+        Request req = new Request.Builder().type(RequestType.SAVE_TICKET).data(ticketDTO).build();
+        sendRequest(req);
+        Response response = readResponse();
+        if (response.getResponseType() == ResponseType.ERROR) {
+            String err = response.getData().toString();
+            closeConnection();
+            throw new ServiceException(err);
+        }
     }
 
     @Override
     public void update(Integer flightId, Flight flight) {
-
+        FlightDTO flightDTO = Converter.getFlightDTO(flight);
+        flight.setId(flightId);
+        Request req = new Request.Builder().type(RequestType.UPDATE_FLIGHT).data(flightDTO).build();
+        sendRequest(req);
+        Response response = readResponse();
+        if (response.getResponseType() == ResponseType.ERROR) {
+            String err = response.getData().toString();
+            closeConnection();
+            throw new ServiceException(err);
+        }
     }
 
     private void closeConnection() {
@@ -153,7 +171,7 @@ public class ProxyRPC implements TourismAppService {
             while (!finished) {
                 try {
                     Object response = input.readObject();
-                    System.out.println("response received " + response);
+                    System.out.println("Response received " + response);
                     if (isUpdate((Response) response)) {
                         handleUpdate((Response) response);
                     } else {

@@ -2,8 +2,10 @@ package tourism.app.network.rpc;
 
 import tourism.app.network.dto.Converter;
 import tourism.app.network.dto.FlightDTO;
+import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
 import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
 import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
@@ -73,8 +75,40 @@ public class ClientRPC implements Runnable, Observer {
             return handleLoginRequest(request);
         } else if (request.getRequestType() == RequestType.GET_ALL_FLIGHTS) {
             return handleFlightsRequest(request);
+        } else if (request.getRequestType() == RequestType.SAVE_TICKET) {
+            return handleSaveTicketRequest(request);
+        } else if (request.getRequestType() == RequestType.UPDATE_FLIGHT) {
+            return handleUpdateFlightRequest(request);
         }
         return null;
+    }
+
+    private Response handleUpdateFlightRequest(Request request) {
+        System.out.println("Handling update flight request");
+        try {
+            FlightDTO flightDTO = (FlightDTO) request.getData();
+            Flight flight = Converter.getFlight(flightDTO);
+            tourismAppService.update(flight.getId(), flight);
+            return new Response.Builder().type(ResponseType.UPDATED_TICKET).build();
+        } catch (ServiceException e) {
+            connected = false;
+            System.out.println(String.format("Error handling update ticket request %s", e));
+        }
+        return new Response.Builder().type(ResponseType.ERROR).build();
+    }
+
+    private Response handleSaveTicketRequest(Request request) {
+        System.out.println("Handling save ticket request");
+        try {
+            TicketDTO ticketDTO = (TicketDTO) request.getData();
+            Ticket ticket = Converter.getTicket(ticketDTO);
+            tourismAppService.save(ticket);
+            return new Response.Builder().type(ResponseType.SAVED_TICKET).build();
+        } catch (ServiceException e) {
+            connected = false;
+            System.out.println(String.format("Error handling save ticket request %s", e));
+        }
+        return new Response.Builder().type(ResponseType.ERROR).build();
     }
 
     private Response handleFlightsRequest(Request request) {

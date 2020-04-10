@@ -52,11 +52,11 @@ public class TourismAppServiceImpl implements TourismAppService {
 
     @Override
     public void save(Ticket ticket) {
-
+        ticketRepository.save(ticket);
     }
 
     @Override
     public void update(Integer flightId, Flight flight) {
-
+        flightRepository.update(flightId, flight);
     }
 }

@@ -1,6 +1,7 @@
 package tourism.app.network.dto;
 
 import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
 
 public class Converter {
@@ -11,6 +12,24 @@ public class Converter {
 
     public static User getUser(UserDTO userDTO) {
         return new User(userDTO.getId(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getName());
+    }
+
+    public static TicketDTO getTicketDTO(Ticket ticket){
+        return new TicketDTO(ticket.getId(), ticket.getFlightId(), ticket.getSpots(), ticket.getClientName(), ticket.getClientAddress(),
+                ticket.getTourists());
+    }
+
+    public static Ticket getTicket(TicketDTO ticket){
+        return new Ticket(ticket.getId(), ticket.getFlightId(), ticket.getSpots(), ticket.getClientName(), ticket.getClientAddress(),
+                ticket.getTourists());
+    }
+
+    public static FlightDTO getFlightDTO(Flight flight) {
+        return new FlightDTO(flight.getId(), flight.getDestination(), flight.getAirport(), flight.getFlightDateTime(), flight.getAvailableSpots());
+    }
+
+    public static Flight getFlight(FlightDTO flight) {
+        return new Flight(flight.getId(), flight.getDestination(), flight.getAirport(), flight.getFlightDateTime(), flight.getAvailableSpots());
     }
 
     public static Flight[] getFlightsList(FlightDTO[] flightDTOS) {
