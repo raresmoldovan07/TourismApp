@@ -13,10 +13,9 @@ import javafx.stage.Stage;
 import ubb.tourism.business.service.impl.FlightServiceImpl;
 import ubb.tourism.business.service.impl.TicketServiceImpl;
 import ubb.tourism.business.service.impl.UserServiceImpl;
-import ubb.tourism.controller.model.FlightSummary;
+import ubb.tourism.controller.dto.FlightDTO;
 import ubb.tourism.data.access.entity.Flight;
 import ubb.tourism.data.access.entity.Ticket;
-import ubb.tourism.data.access.entity.User;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -38,13 +37,13 @@ public class HomeController implements Initializable, Observer {
     @FXML
     public TableView<Flight> flightTableView;
     @FXML
-    public TableView<FlightSummary> searchTableView;
+    public TableView<FlightDTO> searchTableView;
     @FXML
-    public TableColumn<FlightSummary, String> searchAirportColumn;
+    public TableColumn<FlightDTO, String> searchAirportColumn;
     @FXML
-    public TableColumn<FlightSummary, LocalTime> searchTimeColumn;
+    public TableColumn<FlightDTO, LocalTime> searchTimeColumn;
     @FXML
-    public TableColumn<FlightSummary, Integer> searchSpotsColumn;
+    public TableColumn<FlightDTO, Integer> searchSpotsColumn;
     @FXML
     public TextField searchTextField;
     @FXML
@@ -67,19 +66,16 @@ public class HomeController implements Initializable, Observer {
     public Button logoutButton;
 
     private ObservableList<Flight> tableViewModelGrade;
-    private ObservableList<FlightSummary> searchTableViewModelGrade;
+    private ObservableList<FlightDTO> searchTableViewModelGrade;
 
     private FlightServiceImpl flightService;
     private TicketServiceImpl ticketService;
     private UserServiceImpl userService;
 
-    private User authenticatedUser;
-
-    public HomeController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService, User authenticatedUser) {
+    public HomeController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService) {
         this.flightService = flightService;
         this.ticketService = ticketService;
         this.userService = userService;
-        this.authenticatedUser = authenticatedUser;
         tableViewModelGrade = FXCollections.observableArrayList();
         searchTableViewModelGrade = FXCollections.observableArrayList();
         this.flightService.addObserver(this);
@@ -172,7 +168,7 @@ public class HomeController implements Initializable, Observer {
                     LocalDate localDate = p.getFlightDateTime().toLocalDate();
                     return localDate.equals(searchDatePicker.getValue()) && p.getDestination().equals(searchTextField.getText());
                 })
-                .map(f -> new FlightSummary(f.getAirport(), f.getFlightDateTime().toLocalTime(), f.getAvailableSpots()))
+                .map(f -> new FlightDTO(f.getAirport(), f.getFlightDateTime().toLocalTime(), f.getAvailableSpots()))
                 .forEach(searchTableViewModelGrade::add);
 
         searchAirportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));

@@ -14,8 +14,8 @@ import javafx.stage.Stage;
 import ubb.tourism.business.exception.UserNotFoundException;
 import ubb.tourism.business.service.impl.FlightServiceImpl;
 import ubb.tourism.business.service.impl.TicketServiceImpl;
-import ubb.tourism.data.access.entity.User;
 import ubb.tourism.business.service.impl.UserServiceImpl;
+import ubb.tourism.data.access.entity.User;
 
 import java.io.IOException;
 import java.net.URL;
@@ -36,31 +36,29 @@ public class LoginController implements Initializable {
     private TicketServiceImpl ticketService;
     private UserServiceImpl userService;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
     public LoginController(FlightServiceImpl flightService, TicketServiceImpl ticketService, UserServiceImpl userService) {
         this.flightService = flightService;
         this.ticketService = ticketService;
         this.userService = userService;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+
     public void signingButtonOnMouseClicked(MouseEvent mouseEvent) {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
-        User user = null;
         try {
-            user = userService.getUserByUsernameAndPassword(username, password);
+            User user = userService.getUserByUsernameAndPassword(username, password);
         } catch (UserNotFoundException e) {
             failedAuthenticationLabel.setVisible(true);
             return;
         }
         usernameTextField.clear();
         passwordTextField.clear();
-        openHomePage(user);
-
+        openHomePage();
     }
 
     public void usernameTextFieldOnMouseClicked(MouseEvent mouseEvent) {
@@ -72,10 +70,10 @@ public class LoginController implements Initializable {
         failedAuthenticationLabel.setVisible(false);
     }
 
-    private void openHomePage(User user) {
+    private void openHomePage() {
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/home-stage.fxml"));
-        fxmlLoader.setControllerFactory(c -> new HomeController(flightService, ticketService, userService, user));
+        fxmlLoader.setControllerFactory(c -> new HomeController(flightService, ticketService, userService));
         AnchorPane anchorPane = null;
         try {
             anchorPane = fxmlLoader.load();

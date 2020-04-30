@@ -39,11 +39,4 @@
         <constructor-arg ref="ticketService"/>
         <constructor-arg ref="userService"/>
     </bean>
-
-<!--    <bean id="homeController" class="ubb.tourism.controller.HomeController">-->
-<!--        <constructor-arg ref="flightService"/>-->
-<!--        <constructor-arg ref="ticketService"/>-->
-<!--        <constructor-arg ref="userService"/>-->
-<!--    </bean>-->
-
 </beans>

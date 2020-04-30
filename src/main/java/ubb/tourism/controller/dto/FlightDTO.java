@@ -1,14 +1,14 @@
-package ubb.tourism.controller.model;
+package ubb.tourism.controller.dto;
 
 import java.time.LocalTime;
 
-public class FlightSummary {
+public class FlightDTO {
 
     private String airport;
     private LocalTime schedule;
     private Integer availableSpots;
 
-    public FlightSummary(String airport, LocalTime schedule, Integer availableSpots) {
+    public FlightDTO(String airport, LocalTime schedule, Integer availableSpots) {
         this.airport = airport;
         this.schedule = schedule;
         this.availableSpots = availableSpots;
