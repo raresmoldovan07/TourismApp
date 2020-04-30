@@ -35,7 +35,7 @@ public class ProxyRPC implements TourismAppService {
     public ProxyRPC(String host, int port) {
         this.host = host;
         this.port = port;
-        qresponses = new LinkedBlockingQueue<Response>();
+        qresponses = new LinkedBlockingQueue<>();
     }
 
     @Override
@@ -150,36 +150,28 @@ public class ProxyRPC implements TourismAppService {
     }
 
     private void handleUpdate(Response response) {
-//        if (response.getResponseType() == ResponseType.USER_LOGGED_IN) {
-//            User friend = DTOUtils.getFromDTO((UserDTO) response.getData());
-//            System.out.println("Friend logged in " + friend);
-//            try {
-//                client.friendLoggedIn(friend);
-//            } catch (ServiceException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        Flight[] flightList = Converter.getFlightsList((FlightDTO[]) response.getData());
+        client.update(flightList);
     }
 
     private boolean isUpdate(Response response) {
-        return response.getResponseType() == ResponseType.USER_LOGGED_OUT ||
-                response.getResponseType() == ResponseType.OK;
+        return response.getResponseType() == ResponseType.OBSERVER_UPDATE;
     }
 
     private class ReaderThread implements Runnable {
         public void run() {
             while (!finished) {
                 try {
-                    Object response = input.readObject();
+                    Response response = (Response) input.readObject();
                     System.out.println("Response received " + response);
-                    if (isUpdate((Response) response)) {
-                        handleUpdate((Response) response);
-                    } else {
-                        try {
-                            qresponses.put((Response) response);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+                    if (isUpdate(response)) {
+                        handleUpdate(response);
+                        continue;
+                    }
+                    try {
+                        qresponses.put((Response) response);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 } catch (IOException | ClassNotFoundException e) {
                     System.out.println("Reading error " + e);

@@ -27,6 +27,14 @@ public class Response implements Serializable {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "Response{" +
+                "responseType=" + responseType +
+                ", data=" + data +
+                '}';
+    }
+
     public static class Builder {
         private Response response = new Response();
 

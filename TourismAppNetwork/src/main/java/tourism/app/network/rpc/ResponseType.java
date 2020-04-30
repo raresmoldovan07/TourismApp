@@ -7,5 +7,6 @@ public enum ResponseType {
     USER_LOGGED_IN,
     USER_LOGGED_OUT,
     SAVED_TICKET,
-    UPDATED_TICKET
+    UPDATED_FLIGHT,
+    OBSERVER_UPDATE
 }

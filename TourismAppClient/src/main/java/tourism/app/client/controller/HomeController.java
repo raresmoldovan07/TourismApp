@@ -80,12 +80,16 @@ public class HomeController implements Initializable, Observer {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
-        update();
+        loadFlightTable(tourismAppService.findAll());
+        clearTextFields();
+        handleFlightTableSelection();
+        handleSearchFlightTextField();
+        handleQuantityTextField();
     }
 
     @Override
-    public void update() {
-        loadFlightTable();
+    public void update(Flight[] flights) {
+        loadFlightTable(flights);
         clearTextFields();
         handleFlightTableSelection();
         handleSearchFlightTextField();
@@ -110,12 +114,11 @@ public class HomeController implements Initializable, Observer {
         loadSearchFlightTable();
     }
 
-    private void loadFlightTable() {
+    private void loadFlightTable(Flight[] flights) {
 
         tableViewModelGrade.clear();
         flightTableView.getSelectionModel().clearSelection();
 
-        Flight[] flights = tourismAppService.findAll();
         List<Flight> flightsIterable = new ArrayList<>(Arrays.asList(flights));
 
         flightsIterable.stream()

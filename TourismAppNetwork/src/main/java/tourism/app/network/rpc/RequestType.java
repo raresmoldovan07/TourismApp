@@ -6,5 +6,6 @@ public enum RequestType {
     GET_LOGGED_USERS,
     GET_ALL_FLIGHTS,
     SAVE_TICKET,
-    UPDATE_FLIGHT
+    UPDATE_FLIGHT,
+    OBSERVER_UPDATE
 }

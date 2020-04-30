@@ -66,8 +66,13 @@ public class ClientRPC implements Runnable, Observer {
     }
 
     @Override
-    public void update() {
-
+    public void update(Flight[] flights) {
+        System.out.println("Sending update request");
+        try {
+            sendResponse(new Response.Builder().type(ResponseType.OBSERVER_UPDATE).data(Converter.getFlightDTOsList(flights)).build());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Response handleRequest(Request request) {
@@ -89,7 +94,7 @@ public class ClientRPC implements Runnable, Observer {
             FlightDTO flightDTO = (FlightDTO) request.getData();
             Flight flight = Converter.getFlight(flightDTO);
             tourismAppService.update(flight.getId(), flight);
-            return new Response.Builder().type(ResponseType.UPDATED_TICKET).build();
+            return new Response.Builder().type(ResponseType.UPDATED_FLIGHT).build();
         } catch (ServiceException e) {
             connected = false;
             System.out.println(String.format("Error handling update ticket request %s", e));

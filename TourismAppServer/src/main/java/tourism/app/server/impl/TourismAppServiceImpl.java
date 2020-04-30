@@ -13,8 +13,12 @@ import tourism.app.services.exception.ServiceException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class TourismAppServiceImpl implements TourismAppService {
+
+    private static final int DEFAULT_THREADS_NUMBER = 5;
 
     private FlightRepository flightRepository;
     private TicketRepository ticketRepository;
@@ -31,7 +35,7 @@ public class TourismAppServiceImpl implements TourismAppService {
 
 
     @Override
-    public User getUserByUsernameAndPassword(String username, String password, Observer client) throws ServiceException {
+    public synchronized User getUserByUsernameAndPassword(String username, String password, Observer client) throws ServiceException {
         User user = userRepository.getUserByUsernameAndPassword(username, password);
         if (user == null) {
             throw new ServiceException("User not found");
@@ -41,7 +45,7 @@ public class TourismAppServiceImpl implements TourismAppService {
     }
 
     @Override
-    public Flight[] findAll() {
+    public synchronized Flight[] findAll() {
         List<Flight> flightList = (List<Flight>) flightRepository.findAll();
         Flight[] flights = new Flight[flightList.size()];
         for (int i = 0; i < flightList.size(); ++i) {
@@ -51,12 +55,23 @@ public class TourismAppServiceImpl implements TourismAppService {
     }
 
     @Override
-    public void save(Ticket ticket) {
+    public synchronized void save(Ticket ticket) {
         ticketRepository.save(ticket);
     }
 
     @Override
-    public void update(Integer flightId, Flight flight) {
+    public synchronized void update(Integer flightId, Flight flight) {
         flightRepository.update(flightId, flight);
+        notifyLoggedUser();
+    }
+
+    private void notifyLoggedUser() {
+        ExecutorService executorService = Executors.newFixedThreadPool(DEFAULT_THREADS_NUMBER);
+        for (Observer user : loggedUsers.values()) {
+            executorService.execute(() -> {
+                user.update(findAll());
+            });
+        }
+        executorService.shutdown();
     }
 }
