@@ -86,20 +86,6 @@ public class ProxyRPC implements TourismAppService {
         }
     }
 
-    @Override
-    public void update(Integer flightId, Flight flight) {
-        FlightDTO flightDTO = Converter.getFlightDTO(flight);
-        flight.setId(flightId);
-        Request req = new Request.Builder().type(RequestType.UPDATE_FLIGHT).data(flightDTO).build();
-        sendRequest(req);
-        Response response = readResponse();
-        if (response.getResponseType() == ResponseType.ERROR) {
-            String err = response.getData().toString();
-            closeConnection();
-            throw new ServiceException(err);
-        }
-    }
-
     private void closeConnection() {
         finished = true;
         try {

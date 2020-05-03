@@ -57,11 +57,9 @@ public class TourismAppServiceImpl implements TourismAppService {
     @Override
     public synchronized void save(Ticket ticket) {
         ticketRepository.save(ticket);
-    }
-
-    @Override
-    public synchronized void update(Integer flightId, Flight flight) {
-        flightRepository.update(flightId, flight);
+        Flight flight = flightRepository.findOne(ticket.getFlightId());
+        flight.setAvailableSpots(flight.getAvailableSpots() - ticket.getSpots());
+        flightRepository.update(flight.getId(), flight);
         notifyLoggedUser();
     }
 

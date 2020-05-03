@@ -18,7 +18,6 @@ import java.net.Socket;
 
 public class ClientRPC implements Runnable, Observer {
 
-    private static Response okResponse = new Response.Builder().type(ResponseType.OK).build();
     private TourismAppService tourismAppService;
     private Socket connection;
     private ObjectInputStream input;
@@ -82,24 +81,8 @@ public class ClientRPC implements Runnable, Observer {
             return handleFlightsRequest(request);
         } else if (request.getRequestType() == RequestType.SAVE_TICKET) {
             return handleSaveTicketRequest(request);
-        } else if (request.getRequestType() == RequestType.UPDATE_FLIGHT) {
-            return handleUpdateFlightRequest(request);
         }
         return null;
-    }
-
-    private Response handleUpdateFlightRequest(Request request) {
-        System.out.println("Handling update flight request");
-        try {
-            FlightDTO flightDTO = (FlightDTO) request.getData();
-            Flight flight = Converter.getFlight(flightDTO);
-            tourismAppService.update(flight.getId(), flight);
-            return new Response.Builder().type(ResponseType.UPDATED_FLIGHT).build();
-        } catch (ServiceException e) {
-            connected = false;
-            System.out.println(String.format("Error handling update ticket request %s", e));
-        }
-        return new Response.Builder().type(ResponseType.ERROR).build();
     }
 
     private Response handleSaveTicketRequest(Request request) {

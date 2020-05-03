@@ -10,7 +10,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import tourism.app.client.controller.model.FlightSummary;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import tourism.app.client.controller.model.FlightDTO;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.services.Observer;
@@ -38,13 +40,13 @@ public class HomeController implements Initializable, Observer {
     @FXML
     public TableView<Flight> flightTableView;
     @FXML
-    public TableView<FlightSummary> searchTableView;
+    public TableView<FlightDTO> searchTableView;
     @FXML
-    public TableColumn<FlightSummary, String> searchAirportColumn;
+    public TableColumn<FlightDTO, String> searchAirportColumn;
     @FXML
-    public TableColumn<FlightSummary, LocalTime> searchTimeColumn;
+    public TableColumn<FlightDTO, LocalTime> searchTimeColumn;
     @FXML
-    public TableColumn<FlightSummary, Integer> searchSpotsColumn;
+    public TableColumn<FlightDTO, Integer> searchSpotsColumn;
     @FXML
     public TextField searchTextField;
     @FXML
@@ -66,8 +68,10 @@ public class HomeController implements Initializable, Observer {
     @FXML
     public Button logoutButton;
 
+    private static final Logger LOGGER = LogManager.getLogger(HomeController.class);
+
     private ObservableList<Flight> tableViewModelGrade;
-    private ObservableList<FlightSummary> searchTableViewModelGrade;
+    private ObservableList<FlightDTO> searchTableViewModelGrade;
 
     private TourismAppService tourismAppService;
 
@@ -80,6 +84,7 @@ public class HomeController implements Initializable, Observer {
     @Override
     @FXML
     public void initialize(URL location, ResourceBundle resources) {
+        LOGGER.info("Initializing HomeController on thread {}", Thread.currentThread().getId());
         loadFlightTable(tourismAppService.findAll());
         clearTextFields();
         handleFlightTableSelection();
@@ -89,25 +94,17 @@ public class HomeController implements Initializable, Observer {
 
     @Override
     public void update(Flight[] flights) {
-        loadFlightTable(flights);
-        clearTextFields();
-        handleFlightTableSelection();
-        handleSearchFlightTextField();
-        handleQuantityTextField();
+        LOGGER.info("Updating flights on thread {}", Thread.currentThread().getId());
+        List<Flight> flightsIterable = new ArrayList<>(Arrays.asList(flights));
+        tableViewModelGrade.clear();
+        flightsIterable.stream().filter(p -> p.getAvailableSpots() > 0).forEach(tableViewModelGrade::add);
     }
 
     @FXML
     public void confirmTicketsButtonOnMouseClicked(MouseEvent mouseEvent) {
-        String clientName = clientNameTextField.getText();
-        String clientAddress = clientAddressTextField.getText();
-        String tourists = touristsTextField.getText();
-        Integer quantity = Integer.parseInt(quantityTextField.getText());
-        Integer flightId = flightTableView.getSelectionModel().getSelectedItem().getId();
-        Flight flight = flightTableView.getSelectionModel().getSelectedItem();
-        flight.setAvailableSpots(flight.getAvailableSpots() - quantity);
-
-        tourismAppService.save(new Ticket(0, flightId, quantity, clientName, clientAddress, tourists));
-        tourismAppService.update(flightId, flight);
+        LOGGER.info("Saving ticket on thread {}", Thread.currentThread().getId());
+        tourismAppService.save(buildTicket());
+        clearTextFields();
     }
 
     public void selectDateEvent(ActionEvent actionEvent) {
@@ -115,15 +112,12 @@ public class HomeController implements Initializable, Observer {
     }
 
     private void loadFlightTable(Flight[] flights) {
-
+        LOGGER.info("Loading flight table on thread {}", Thread.currentThread().getId());
         tableViewModelGrade.clear();
         flightTableView.getSelectionModel().clearSelection();
 
         List<Flight> flightsIterable = new ArrayList<>(Arrays.asList(flights));
-
-        flightsIterable.stream()
-                .filter(p -> p.getAvailableSpots() > 0)
-                .forEach(tableViewModelGrade::add);
+        flightsIterable.stream().filter(p -> p.getAvailableSpots() > 0).forEach(tableViewModelGrade::add);
 
         destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
@@ -172,7 +166,7 @@ public class HomeController implements Initializable, Observer {
                     LocalDate localDate = p.getFlightDateTime().toLocalDate();
                     return localDate.equals(searchDatePicker.getValue()) && p.getDestination().equals(searchTextField.getText());
                 })
-                .map(f -> new FlightSummary(f.getAirport(), f.getFlightDateTime().toLocalTime(), f.getAvailableSpots()))
+                .map(f -> new FlightDTO(f.getAirport(), f.getFlightDateTime().toLocalTime(), f.getAvailableSpots()))
                 .forEach(searchTableViewModelGrade::add);
 
         searchAirportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
@@ -210,6 +204,17 @@ public class HomeController implements Initializable, Observer {
         quantityTextField.setText("");
         searchTextField.setText("");
         confirmTicketsButton.setDisable(true);
+    }
+
+    private Ticket buildTicket() {
+        String clientName = clientNameTextField.getText();
+        String clientAddress = clientAddressTextField.getText();
+        String tourists = touristsTextField.getText();
+        Integer quantity = Integer.parseInt(quantityTextField.getText());
+        Integer flightId = flightTableView.getSelectionModel().getSelectedItem().getId();
+        Flight flight = flightTableView.getSelectionModel().getSelectedItem();
+        flight.setAvailableSpots(flight.getAvailableSpots() - quantity);
+        return new Ticket(0, flightId, quantity, clientName, clientAddress, tourists);
     }
 
     public void logoutButtonOnMouseClicked(MouseEvent mouseEvent) {

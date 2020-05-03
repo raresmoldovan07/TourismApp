@@ -12,6 +12,4 @@ public interface TourismAppService {
     Flight[] findAll();
 
     void save(Ticket ticket);
-
-    void update(Integer flightId, Flight flight);
 }
