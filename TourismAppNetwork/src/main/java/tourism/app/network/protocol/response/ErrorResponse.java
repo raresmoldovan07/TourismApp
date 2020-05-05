@@ -1,4 +1,4 @@
-package tourism.app.network.rpc;
+package tourism.app.network.protocol.response;
 
 public class ErrorResponse implements Response {
 

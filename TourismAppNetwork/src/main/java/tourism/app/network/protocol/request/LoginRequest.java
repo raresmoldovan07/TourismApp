@@ -1,4 +1,4 @@
-package tourism.app.network.rpc;
+package tourism.app.network.protocol.request;
 
 import tourism.app.network.dto.UserDTO;
 

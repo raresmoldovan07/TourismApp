@@ -8,7 +8,7 @@ import tourism.app.network.util.impl.RPCServer;
 import tourism.app.server.impl.TourismAppServiceImpl;
 import tourism.app.services.TourismAppService;
 
-public class RPCServerStarter {
+public class ServerStarter {
 
     private static final int DEFAULT_PORT = 55555;
 

@@ -1,6 +1,4 @@
-package tourism.app.network.rpc;
-
-import tourism.app.network.dto.FlightDTO;
+package tourism.app.network.protocol.response;
 
 import java.io.Serializable;
 

@@ -1,9 +1,13 @@
-package tourism.app.network.rpc;
+package tourism.app.network.protocol;
 
 import tourism.app.network.dto.Converter;
-import tourism.app.network.dto.FlightDTO;
 import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
+import tourism.app.network.protocol.request.*;
+import tourism.app.network.protocol.response.ErrorResponse;
+import tourism.app.network.protocol.response.FindAllFlightsResponse;
+import tourism.app.network.protocol.response.LoggedResponse;
+import tourism.app.network.protocol.response.Response;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
@@ -18,7 +22,7 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class ProxyRPC implements TourismAppService {
+public class ProxyServer implements TourismAppService {
 
     private String host;
     private int port;
@@ -32,7 +36,7 @@ public class ProxyRPC implements TourismAppService {
     private BlockingQueue<Response> qresponses;
     private volatile boolean finished;
 
-    public ProxyRPC(String host, int port) {
+    public ProxyServer(String host, int port) {
         this.host = host;
         this.port = port;
         qresponses = new LinkedBlockingQueue<>();
@@ -129,7 +133,7 @@ public class ProxyRPC implements TourismAppService {
         tw.start();
     }
 
-    private void handleUpdateFlightsResponse(UpdateFlights response) {
+    private void handleUpdateFlightsResponse(UpdateFlightsResponse response) {
         Flight[] flightList = Converter.getFlightsList(response.getFlightDTOs());
         client.update(flightList);
     }
@@ -141,8 +145,8 @@ public class ProxyRPC implements TourismAppService {
                     Response response = (Response) input.readObject();
                     System.out.println("Response received " + response);
                     if (response instanceof UpdateResponse) {
-                        if(response instanceof UpdateFlights) {
-                            handleUpdateFlightsResponse((UpdateFlights)response);
+                        if(response instanceof UpdateFlightsResponse) {
+                            handleUpdateFlightsResponse((UpdateFlightsResponse)response);
                         }
                         continue;
                     }

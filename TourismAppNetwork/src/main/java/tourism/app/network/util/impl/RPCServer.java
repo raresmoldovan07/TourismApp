@@ -1,6 +1,6 @@
 package tourism.app.network.util.impl;
 
-import tourism.app.network.rpc.ClientRPC;
+import tourism.app.network.protocol.Client;
 import tourism.app.network.util.AbstractConcurrentServer;
 import tourism.app.services.TourismAppService;
 
@@ -17,7 +17,7 @@ public class RPCServer extends AbstractConcurrentServer {
 
     @Override
     protected Thread createThread(Socket client) {
-        ClientRPC clientRPC = new ClientRPC(tourismAppService, client);
+        Client clientRPC = new Client(tourismAppService, client);
         return new Thread(clientRPC);
     }
 }

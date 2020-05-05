@@ -6,10 +6,10 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import tourism.app.client.controller.LoginController;
-import tourism.app.network.rpc.ProxyRPC;
+import tourism.app.network.protocol.ProxyServer;
 import tourism.app.services.TourismAppService;
 
-public class RPCClientStarter extends Application {
+public class ClientStarter extends Application {
 
     private static final int DEFAULT_PORT = 55555;
     private static final String DEFAULT_SERVER = "localhost";
@@ -21,7 +21,7 @@ public class RPCClientStarter extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println(String.format("Starting client on %s:%s", DEFAULT_SERVER, DEFAULT_PORT));
-        TourismAppService tourismAppService = new ProxyRPC(DEFAULT_SERVER, DEFAULT_PORT);
+        TourismAppService tourismAppService = new ProxyServer(DEFAULT_SERVER, DEFAULT_PORT);
 
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource("/gui/login-stage.fxml"));

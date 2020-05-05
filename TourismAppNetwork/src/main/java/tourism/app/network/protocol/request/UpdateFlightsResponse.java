@@ -1,12 +1,12 @@
-package tourism.app.network.rpc;
+package tourism.app.network.protocol.request;
 
 import tourism.app.network.dto.FlightDTO;
 
-public class UpdateFlights  implements UpdateResponse {
+public class UpdateFlightsResponse implements UpdateResponse {
 
     public FlightDTO[] flightDTOs;
 
-    public UpdateFlights(FlightDTO[] flightDTOs) {
+    public UpdateFlightsResponse(FlightDTO[] flightDTOs) {
         this.flightDTOs = flightDTOs;
     }
 

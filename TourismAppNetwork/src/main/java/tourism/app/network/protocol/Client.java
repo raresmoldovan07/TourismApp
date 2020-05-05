@@ -1,9 +1,11 @@
-package tourism.app.network.rpc;
+package tourism.app.network.protocol;
 
 import tourism.app.network.dto.Converter;
 import tourism.app.network.dto.FlightDTO;
 import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
+import tourism.app.network.protocol.request.*;
+import tourism.app.network.protocol.response.*;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
@@ -16,7 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ClientRPC implements Runnable, Observer {
+public class Client implements Runnable, Observer {
 
     private TourismAppService tourismAppService;
     private Socket connection;
@@ -24,7 +26,7 @@ public class ClientRPC implements Runnable, Observer {
     private ObjectOutputStream output;
     private volatile boolean connected;
 
-    public ClientRPC(TourismAppService tourismAppService, Socket socket) {
+    public Client(TourismAppService tourismAppService, Socket socket) {
         this.tourismAppService = tourismAppService;
         this.connection = socket;
         try {
@@ -68,7 +70,7 @@ public class ClientRPC implements Runnable, Observer {
     public void update(Flight[] flights) {
         System.out.println("Sending update request");
         try {
-            sendResponse(new UpdateFlights(Converter.getFlightDTOsList(flights)));
+            sendResponse(new UpdateFlightsResponse(Converter.getFlightDTOsList(flights)));
         } catch (IOException e) {
             e.printStackTrace();
         }

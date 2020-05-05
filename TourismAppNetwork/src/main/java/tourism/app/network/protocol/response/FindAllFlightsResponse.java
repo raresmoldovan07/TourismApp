@@ -1,4 +1,4 @@
-package tourism.app.network.rpc;
+package tourism.app.network.protocol.response;
 
 import tourism.app.network.dto.FlightDTO;
 
