@@ -1,6 +1,8 @@
 package tourism.app.persistence.data.access.entity;
 
-public class Ticket implements Entity<Integer> {
+import java.io.Serializable;
+
+public class Ticket implements Entity<Integer>{
 
     private Integer id;
     private Integer flightId;

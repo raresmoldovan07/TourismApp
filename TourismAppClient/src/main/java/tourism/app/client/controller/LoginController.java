@@ -16,6 +16,7 @@ import tourism.app.persistence.data.access.entity.User;
 
 import java.io.IOException;
 import java.net.URL;
+import java.rmi.RemoteException;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -40,7 +41,7 @@ public class LoginController implements Initializable {
         this.tourismAppService = tourismAppService;
     }
 
-    public void signingButtonOnMouseClicked(MouseEvent mouseEvent) {
+    public void signingButtonOnMouseClicked(MouseEvent mouseEvent) throws RemoteException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
         HomeController homeController = new HomeController(tourismAppService);

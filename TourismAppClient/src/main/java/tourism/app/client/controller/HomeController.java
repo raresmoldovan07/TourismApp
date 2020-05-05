@@ -18,7 +18,10 @@ import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 
+import java.io.Serializable;
 import java.net.URL;
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -27,7 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HomeController implements Initializable, Observer {
+public class HomeController extends UnicastRemoteObject implements Initializable, Observer, Serializable {
 
     @FXML
     public TableColumn<Flight, String> destinationColumn;
@@ -75,7 +78,7 @@ public class HomeController implements Initializable, Observer {
 
     private TourismAppService tourismAppService;
 
-    public HomeController(TourismAppService tourismAppService) {
+    public HomeController(TourismAppService tourismAppService) throws RemoteException {
         this.tourismAppService = tourismAppService;
         tableViewModelGrade = FXCollections.observableArrayList();
         searchTableViewModelGrade = FXCollections.observableArrayList();

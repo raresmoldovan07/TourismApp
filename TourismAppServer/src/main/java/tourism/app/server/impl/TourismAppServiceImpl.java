@@ -10,6 +10,7 @@ import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 import tourism.app.services.exception.ServiceException;
 
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -32,7 +33,6 @@ public class TourismAppServiceImpl implements TourismAppService {
         this.userRepository = userRepository;
         loggedUsers = new ConcurrentHashMap<>();
     }
-
 
     @Override
     public synchronized User getUserByUsernameAndPassword(String username, String password, Observer client) throws ServiceException {
@@ -67,7 +67,11 @@ public class TourismAppServiceImpl implements TourismAppService {
         ExecutorService executorService = Executors.newFixedThreadPool(DEFAULT_THREADS_NUMBER);
         for (Observer user : loggedUsers.values()) {
             executorService.execute(() -> {
-                user.update(findAll());
+                try {
+                    user.update(findAll());
+                } catch (RemoteException e) {
+                    System.out.println("[ERROR]:TourismAppServiceImpl - Error while updating client" + e.getMessage());
+                }
             });
         }
         executorService.shutdown();

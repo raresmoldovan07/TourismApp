@@ -2,7 +2,10 @@ package tourism.app.services;
 
 import tourism.app.persistence.data.access.entity.Flight;
 
-public interface Observer {
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
-    void update(Flight[] flights);
+public interface Observer extends Remote {
+
+    void update(Flight[] flights) throws RemoteException;
 }

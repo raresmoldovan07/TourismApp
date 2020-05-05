@@ -1,5 +1,6 @@
 package tourism.app.persistence.data.access.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 public class Flight implements Entity<Integer> {

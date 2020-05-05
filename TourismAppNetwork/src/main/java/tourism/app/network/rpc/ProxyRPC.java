@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.rmi.RemoteException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -135,7 +136,7 @@ public class ProxyRPC implements TourismAppService {
         tw.start();
     }
 
-    private void handleUpdate(Response response) {
+    private void handleUpdate(Response response) throws RemoteException {
         Flight[] flightList = Converter.getFlightsList((FlightDTO[]) response.getData());
         client.update(flightList);
     }
