@@ -13,3 +13,15 @@ turiștilor, adresa clientului și numărul de locuri. După cumpărarea unui bi
 de turism văd lista actualizată a zborurilor și numărul de locuri disponibile. Dacă pentru un anumit zbor
 nu mai sunt locuri disponbile, acel zbor nu va mai apărea în lista zborurilor afișate pe interfață.
 4. Logout.
+
+## Tools
+* Build Tool: Gradle
+* Java 8, JavaFX, Spring 5
+* Database: MySQL
+* IDE: IntelliJ IDEA
+
+### Login page
+<img src="img/login.PNG">
+
+### Home page
+<img src="img/home.PNG">
