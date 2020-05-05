@@ -42,33 +42,29 @@ public class ProxyRPC implements TourismAppService {
     public User getUserByUsernameAndPassword(String username, String password, Observer client) throws ServiceException {
         initializeConnection();
         UserDTO userDTO = new UserDTO(username, password);
-        Request req = new Request.Builder().type(RequestType.LOGIN).data(userDTO).build();
-        sendRequest(req);
+        sendRequest(new LoginRequest(userDTO));
         Response response = readResponse();
-        if (response.getResponseType() == ResponseType.USER_LOGGED_IN) {
+        if (response instanceof LoggedResponse) {
             this.client = client;
-            return Converter.getUser((UserDTO) response.getData());
+            return Converter.getUser(((LoggedResponse) response).getUserDTO());
         }
-        if (response.getResponseType() == ResponseType.ERROR) {
-            String err = response.getData().toString();
+        if (response instanceof ErrorResponse) {
             closeConnection();
-            throw new ServiceException(err);
+            throw new ServiceException(((ErrorResponse) response).getMessage());
         }
         return null;
     }
 
     @Override
     public Flight[] findAll() {
-        Request req = new Request.Builder().type(RequestType.GET_ALL_FLIGHTS).build();
-        sendRequest(req);
+        sendRequest(new FindAllFlightsRequest());
         Response response = readResponse();
-        if (response.getResponseType() == ResponseType.GET_ALL_FLIGHTS) {
-            return Converter.getFlightsList((FlightDTO[]) response.getData());
+        if (response instanceof FindAllFlightsResponse) {
+            return Converter.getFlightsList(((FindAllFlightsResponse) response).getFlightDTOs());
         }
-        if (response.getResponseType() == ResponseType.ERROR) {
-            String err = response.getData().toString();
+        if (response instanceof ErrorResponse) {
             closeConnection();
-            throw new ServiceException(err);
+            throw new ServiceException(((ErrorResponse) response).getMessage());
         }
         return null;
     }
@@ -76,13 +72,11 @@ public class ProxyRPC implements TourismAppService {
     @Override
     public void save(Ticket ticket) {
         TicketDTO ticketDTO = Converter.getTicketDTO(ticket);
-        Request req = new Request.Builder().type(RequestType.SAVE_TICKET).data(ticketDTO).build();
-        sendRequest(req);
+        sendRequest(new SaveTicketRequest(ticketDTO));
         Response response = readResponse();
-        if (response.getResponseType() == ResponseType.ERROR) {
-            String err = response.getData().toString();
+        if (response instanceof ErrorResponse) {
             closeConnection();
-            throw new ServiceException(err);
+            throw new ServiceException(((ErrorResponse) response).getMessage());
         }
     }
 
@@ -135,13 +129,9 @@ public class ProxyRPC implements TourismAppService {
         tw.start();
     }
 
-    private void handleUpdate(Response response) {
-        Flight[] flightList = Converter.getFlightsList((FlightDTO[]) response.getData());
+    private void handleUpdateFlightsResponse(UpdateFlights response) {
+        Flight[] flightList = Converter.getFlightsList(response.getFlightDTOs());
         client.update(flightList);
-    }
-
-    private boolean isUpdate(Response response) {
-        return response.getResponseType() == ResponseType.OBSERVER_UPDATE;
     }
 
     private class ReaderThread implements Runnable {
@@ -150,8 +140,10 @@ public class ProxyRPC implements TourismAppService {
                 try {
                     Response response = (Response) input.readObject();
                     System.out.println("Response received " + response);
-                    if (isUpdate(response)) {
-                        handleUpdate(response);
+                    if (response instanceof UpdateResponse) {
+                        if(response instanceof UpdateFlights) {
+                            handleUpdateFlightsResponse((UpdateFlights)response);
+                        }
                         continue;
                     }
                     try {

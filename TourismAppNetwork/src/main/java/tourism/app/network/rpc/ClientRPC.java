@@ -68,61 +68,61 @@ public class ClientRPC implements Runnable, Observer {
     public void update(Flight[] flights) {
         System.out.println("Sending update request");
         try {
-            sendResponse(new Response.Builder().type(ResponseType.OBSERVER_UPDATE).data(Converter.getFlightDTOsList(flights)).build());
+            sendResponse(new UpdateFlights(Converter.getFlightDTOsList(flights)));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private Response handleRequest(Request request) {
-        if (request.getRequestType() == RequestType.LOGIN) {
-            return handleLoginRequest(request);
-        } else if (request.getRequestType() == RequestType.GET_ALL_FLIGHTS) {
-            return handleFlightsRequest(request);
-        } else if (request.getRequestType() == RequestType.SAVE_TICKET) {
-            return handleSaveTicketRequest(request);
+        if (request instanceof LoginRequest) {
+            return handleLoginRequest((LoginRequest) request);
+        } else if (request instanceof FindAllFlightsRequest) {
+            return handleFlightsRequest((FindAllFlightsRequest) request);
+        } else if (request instanceof SaveTicketRequest) {
+            return handleSaveTicketRequest((SaveTicketRequest) request);
         }
         return null;
     }
 
-    private Response handleSaveTicketRequest(Request request) {
+    private Response handleSaveTicketRequest(SaveTicketRequest request) {
         System.out.println("Handling save ticket request");
         try {
-            TicketDTO ticketDTO = (TicketDTO) request.getData();
+            TicketDTO ticketDTO = request.getTicketDTO();
             Ticket ticket = Converter.getTicket(ticketDTO);
             tourismAppService.save(ticket);
-            return new Response.Builder().type(ResponseType.SAVED_TICKET).build();
+            return new OkResponse();
         } catch (ServiceException e) {
             connected = false;
             System.out.println(String.format("Error handling save ticket request %s", e));
+            return new ErrorResponse(e.getMessage());
         }
-        return new Response.Builder().type(ResponseType.ERROR).build();
     }
 
-    private Response handleFlightsRequest(Request request) {
+    private Response handleFlightsRequest(FindAllFlightsRequest request) {
         System.out.println("Handling flights request");
         try {
             Flight[] flights = tourismAppService.findAll();
             FlightDTO[] flightDTOS = Converter.getFlightDTOsList(flights);
-            return new Response.Builder().type(ResponseType.GET_ALL_FLIGHTS).data(flightDTOS).build();
+            return new FindAllFlightsResponse(flightDTOS);
         } catch (ServiceException e) {
             connected = false;
             System.out.println(String.format("Error handling flights request %s", e));
+            return new ErrorResponse(e.getMessage());
         }
-        return new Response.Builder().type(ResponseType.ERROR).build();
     }
 
-    private Response handleLoginRequest(Request request) {
+    private Response handleLoginRequest(LoginRequest request) {
         System.out.println("Handling login request");
-        UserDTO userDTO = (UserDTO) request.getData();
+        UserDTO userDTO = request.getUserDTO();
         try {
             User user = tourismAppService.getUserByUsernameAndPassword(userDTO.getUsername(), userDTO.getPassword(), this);
-            return new Response.Builder().type(ResponseType.USER_LOGGED_IN).data(Converter.getUserDTO(user)).build();
+            return new LoggedResponse(Converter.getUserDTO(user));
         } catch (ServiceException e) {
             connected = false;
             System.out.println(String.format("Error handling login request %s", e));
+            return new ErrorResponse(e.getMessage());
         }
-        return new Response.Builder().type(ResponseType.ERROR).build();
     }
 
     private void sendResponse(Response response) throws IOException {
