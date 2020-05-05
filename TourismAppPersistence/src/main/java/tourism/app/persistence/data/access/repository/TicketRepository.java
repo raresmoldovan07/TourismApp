@@ -1,6 +1,6 @@
 package tourism.app.persistence.data.access.repository;
 
-import tourism.app.persistence.data.access.entity.Ticket;
+import tourism.app.model.entity.Ticket;
 
 public interface TicketRepository extends CrudRepository<Integer, Ticket> {
 }

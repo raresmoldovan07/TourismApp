@@ -1,6 +1,6 @@
 package tourism.app.services;
 
-import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.model.entity.Flight;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

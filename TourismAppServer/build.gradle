@@ -15,6 +15,7 @@ dependencies {
     compile project (':TourismAppPersistence')
     compile project (':TourismAppServices')
     compile project (':TourismAppNetwork')
+    compile project (':TourismAppModel')
 
     compile group: 'org.springframework', name: 'spring-context', version: '5.0.0.RELEASE'
 

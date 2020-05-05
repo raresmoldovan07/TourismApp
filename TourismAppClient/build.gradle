@@ -15,6 +15,7 @@ dependencies {
     compile project (':TourismAppPersistence')
     compile project (':TourismAppServices')
     compile project (':TourismAppNetwork')
+    compile project (':TourismAppModel')
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 

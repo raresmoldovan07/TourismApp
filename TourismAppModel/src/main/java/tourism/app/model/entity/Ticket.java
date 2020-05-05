@@ -1,6 +1,4 @@
-package tourism.app.persistence.data.access.entity;
-
-import java.io.Serializable;
+package tourism.app.model.entity;
 
 public class Ticket implements Entity<Integer>{
 

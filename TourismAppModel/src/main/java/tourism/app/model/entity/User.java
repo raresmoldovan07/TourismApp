@@ -1,4 +1,4 @@
-package tourism.app.persistence.data.access.entity;
+package tourism.app.model.entity;
 
 public class User implements Entity<Integer> {
 

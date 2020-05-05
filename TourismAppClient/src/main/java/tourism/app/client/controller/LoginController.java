@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import tourism.app.services.TourismAppService;
-import tourism.app.persistence.data.access.entity.User;
+import tourism.app.model.entity.User;
 
 import java.io.IOException;
 import java.net.URL;

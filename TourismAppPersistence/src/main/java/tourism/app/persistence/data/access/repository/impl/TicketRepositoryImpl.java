@@ -2,7 +2,7 @@ package tourism.app.persistence.data.access.repository.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tourism.app.persistence.data.access.entity.Ticket;
+import tourism.app.model.entity.Ticket;
 import tourism.app.persistence.data.access.repository.TicketRepository;
 import tourism.app.persistence.data.access.utils.JdbcUtils;
 

@@ -1,8 +1,8 @@
 package tourism.app.services;
 
-import tourism.app.persistence.data.access.entity.Flight;
-import tourism.app.persistence.data.access.entity.Ticket;
-import tourism.app.persistence.data.access.entity.User;
+import tourism.app.model.entity.Flight;
+import tourism.app.model.entity.Ticket;
+import tourism.app.model.entity.User;
 import tourism.app.services.exception.ServiceException;
 
 public interface TourismAppService {

@@ -13,8 +13,8 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tourism.app.client.controller.model.FlightDTO;
-import tourism.app.persistence.data.access.entity.Flight;
-import tourism.app.persistence.data.access.entity.Ticket;
+import tourism.app.model.entity.Flight;
+import tourism.app.model.entity.Ticket;
 import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 

@@ -1,6 +1,6 @@
 package tourism.app.persistence.data.access.repository;
 
-import tourism.app.persistence.data.access.entity.Flight;
+import tourism.app.model.entity.Flight;
 
 import java.time.LocalDateTime;
 
