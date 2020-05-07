@@ -1,13 +1,11 @@
 package tourism.app.network.protocol;
 
+import com.google.gson.Gson;
 import tourism.app.network.dto.Converter;
 import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
 import tourism.app.network.protocol.request.*;
-import tourism.app.network.protocol.response.ErrorResponse;
-import tourism.app.network.protocol.response.FindAllFlightsResponse;
-import tourism.app.network.protocol.response.LoggedResponse;
-import tourism.app.network.protocol.response.Response;
+import tourism.app.network.protocol.response.*;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
@@ -35,6 +33,7 @@ public class ProxyServer implements TourismAppService {
 
     private BlockingQueue<Response> qresponses;
     private volatile boolean finished;
+    private Gson gson = new Gson();
 
     public ProxyServer(String host, int port) {
         this.host = host;
@@ -98,7 +97,8 @@ public class ProxyServer implements TourismAppService {
 
     private void sendRequest(Request request) throws ServiceException {
         try {
-            output.writeObject(request);
+            String requestJSON = gson.toJson(request);
+            output.writeObject(requestJSON);
             output.flush();
         } catch (IOException e) {
             throw new ServiceException("Error sending request " + e);
@@ -142,8 +142,28 @@ public class ProxyServer implements TourismAppService {
         public void run() {
             while (!finished) {
                 try {
-                    Response response = (Response) input.readObject();
+                    String responseJSON = (String) input.readObject();
+                    Response response = gson.fromJson(responseJSON, Response.class);
                     System.out.println("Response received " + response);
+                    switch (response.getType()) {
+                        case "LoggedResponse":
+                            response = gson.fromJson(responseJSON, LoggedResponse.class);
+                            break;
+                        case "FindAllFlightsResponse":
+                            response = gson.fromJson(responseJSON, FindAllFlightsResponse.class);
+                            break;
+                        case "OkResponse":
+                            response = gson.fromJson(responseJSON, OkResponse.class);
+                            break;
+                        case "ErrorResponse":
+                            response = gson.fromJson(responseJSON, ErrorResponse.class);
+                            break;
+                        case "UpdateFlightsResponse":
+                            response = gson.fromJson(responseJSON, UpdateFlightsResponse.class);
+                            break;
+                        default:
+                            continue;
+                    }
                     if (response instanceof UpdateResponse) {
                         if(response instanceof UpdateFlightsResponse) {
                             handleUpdateFlightsResponse((UpdateFlightsResponse)response);

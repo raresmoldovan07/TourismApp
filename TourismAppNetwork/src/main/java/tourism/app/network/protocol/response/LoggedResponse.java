@@ -2,11 +2,12 @@ package tourism.app.network.protocol.response;
 
 import tourism.app.network.dto.UserDTO;
 
-public class LoggedResponse implements Response {
+public class LoggedResponse extends Response {
 
     private UserDTO userDTO;
 
     public LoggedResponse(UserDTO userDTO) {
+        super("LoggedResponse");
         this.userDTO = userDTO;
     }
 

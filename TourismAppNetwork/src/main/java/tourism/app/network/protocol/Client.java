@@ -1,10 +1,14 @@
 package tourism.app.network.protocol;
 
+import com.google.gson.Gson;
 import tourism.app.network.dto.Converter;
 import tourism.app.network.dto.FlightDTO;
 import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
-import tourism.app.network.protocol.request.*;
+import tourism.app.network.protocol.request.FindAllFlightsRequest;
+import tourism.app.network.protocol.request.LoginRequest;
+import tourism.app.network.protocol.request.Request;
+import tourism.app.network.protocol.request.SaveTicketRequest;
 import tourism.app.network.protocol.response.*;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
@@ -25,6 +29,7 @@ public class Client implements Runnable, Observer {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private volatile boolean connected;
+    private Gson gson = new Gson();
 
     public Client(TourismAppService tourismAppService, Socket socket) {
         this.tourismAppService = tourismAppService;
@@ -43,8 +48,22 @@ public class Client implements Runnable, Observer {
     public void run() {
         while (connected) {
             try {
-                Object request = input.readObject();
-                Response response = handleRequest((Request) request);
+                String requestJSON = (String) input.readObject();
+                Request request = gson.fromJson(requestJSON, Request.class);
+                Response response = null;
+                switch (request.getType()) {
+                    case "LoginRequest":
+                        response = handleRequest(gson.fromJson(requestJSON, LoginRequest.class));
+                        break;
+                    case "FindAllFlightsRequest":
+                        response = handleRequest(gson.fromJson(requestJSON, FindAllFlightsRequest.class));
+                        break;
+                    case "SaveTicketRequest":
+                        response = handleRequest(gson.fromJson(requestJSON, SaveTicketRequest.class));
+                        break;
+                    default:
+                        continue;
+                }
                 if (response != null) {
                     sendResponse(response);
                 }
@@ -129,7 +148,8 @@ public class Client implements Runnable, Observer {
 
     private void sendResponse(Response response) throws IOException {
         System.out.println("Sending response " + response);
-        output.writeObject(response);
+        String responseJSON = gson.toJson(response);
+        output.writeObject(responseJSON);
         output.flush();
     }
 }

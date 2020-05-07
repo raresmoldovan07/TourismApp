@@ -2,11 +2,12 @@ package tourism.app.network.protocol.request;
 
 import tourism.app.network.dto.UserDTO;
 
-public class LoginRequest implements Request {
+public class LoginRequest extends Request {
 
     private UserDTO userDTO;
 
     public LoginRequest(UserDTO userDTO) {
+        super("LoginRequest");
         this.userDTO = userDTO;
     }
 

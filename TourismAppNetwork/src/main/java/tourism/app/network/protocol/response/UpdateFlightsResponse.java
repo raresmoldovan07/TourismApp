@@ -1,12 +1,13 @@
-package tourism.app.network.protocol.request;
+package tourism.app.network.protocol.response;
 
 import tourism.app.network.dto.FlightDTO;
 
-public class UpdateFlightsResponse implements UpdateResponse {
+public class UpdateFlightsResponse extends UpdateResponse {
 
     public FlightDTO[] flightDTOs;
 
     public UpdateFlightsResponse(FlightDTO[] flightDTOs) {
+        super("UpdateFlightsResponse");
         this.flightDTOs = flightDTOs;
     }
 

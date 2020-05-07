@@ -2,11 +2,12 @@ package tourism.app.network.protocol.response;
 
 import tourism.app.network.dto.FlightDTO;
 
-public class FindAllFlightsResponse implements Response {
+public class FindAllFlightsResponse extends Response {
 
     private FlightDTO[] flightDTOs;
 
     public FindAllFlightsResponse(FlightDTO[] flightDTOs) {
+        super("FindAllFlightsResponse");
         this.flightDTOs = flightDTOs;
     }
 
