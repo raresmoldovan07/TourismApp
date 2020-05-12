@@ -17,17 +17,15 @@ import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 import tourism.app.services.exception.ServiceException;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class Client implements Runnable, Observer {
 
     private TourismAppService tourismAppService;
     private Socket connection;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+    private DataInputStream inputStream;
+    private DataOutputStream outputStream;
     private volatile boolean connected;
     private Gson gson = new Gson();
 
@@ -35,9 +33,9 @@ public class Client implements Runnable, Observer {
         this.tourismAppService = tourismAppService;
         this.connection = socket;
         try {
-            output = new ObjectOutputStream(connection.getOutputStream());
-            output.flush();
-            input = new ObjectInputStream(connection.getInputStream());
+            outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.flush();
+            inputStream = new DataInputStream(connection.getInputStream());
             connected = true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -48,7 +46,10 @@ public class Client implements Runnable, Observer {
     public void run() {
         while (connected) {
             try {
-                String requestJSON = (String) input.readObject();
+                int inputSize = inputStream.readInt();
+                byte[] inputByte = new byte[inputSize];
+                inputStream.read(inputByte, 0, inputSize);
+                String requestJSON = new String(inputByte);
                 Request request = gson.fromJson(requestJSON, Request.class);
                 Response response = null;
                 switch (request.getType()) {
@@ -67,7 +68,7 @@ public class Client implements Runnable, Observer {
                 if (response != null) {
                     sendResponse(response);
                 }
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
@@ -77,8 +78,8 @@ public class Client implements Runnable, Observer {
             }
         }
         try {
-            input.close();
-            output.close();
+            inputStream.close();
+            outputStream.close();
             connection.close();
         } catch (IOException e) {
             System.out.println("Error " + e);
@@ -149,7 +150,10 @@ public class Client implements Runnable, Observer {
     private void sendResponse(Response response) throws IOException {
         System.out.println("Sending response " + response);
         String responseJSON = gson.toJson(response);
-        output.writeObject(responseJSON);
-        output.flush();
+        int responseSize = responseJSON.getBytes().length;
+        outputStream.writeInt(responseSize);
+        outputStream.flush();
+        outputStream.write(responseJSON.getBytes(), 0, responseSize);
+        outputStream.flush();
     }
 }

@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 import tourism.app.network.dto.Converter;
 import tourism.app.network.dto.TicketDTO;
 import tourism.app.network.dto.UserDTO;
-import tourism.app.network.protocol.request.*;
+import tourism.app.network.protocol.request.FindAllFlightsRequest;
+import tourism.app.network.protocol.request.LoginRequest;
+import tourism.app.network.protocol.request.Request;
+import tourism.app.network.protocol.request.SaveTicketRequest;
 import tourism.app.network.protocol.response.*;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
@@ -13,9 +16,9 @@ import tourism.app.services.Observer;
 import tourism.app.services.TourismAppService;
 import tourism.app.services.exception.ServiceException;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -27,8 +30,8 @@ public class ProxyServer implements TourismAppService {
 
     private Observer client;
 
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+    private DataInputStream inputStream;
+    private DataOutputStream outputStream;
     private Socket connection;
 
     private BlockingQueue<Response> qresponses;
@@ -86,8 +89,8 @@ public class ProxyServer implements TourismAppService {
     private void closeConnection() {
         finished = true;
         try {
-            input.close();
-            output.close();
+            inputStream.close();
+            outputStream.close();
             connection.close();
             client = null;
         } catch (IOException e) {
@@ -98,8 +101,10 @@ public class ProxyServer implements TourismAppService {
     private void sendRequest(Request request) throws ServiceException {
         try {
             String requestJSON = gson.toJson(request);
-            output.writeObject(requestJSON);
-            output.flush();
+            outputStream.writeInt(requestJSON.getBytes().length);
+            outputStream.flush();
+            outputStream.write(requestJSON.getBytes(), 0, requestJSON.getBytes().length);
+            outputStream.flush();
         } catch (IOException e) {
             throw new ServiceException("Error sending request " + e);
         }
@@ -118,9 +123,9 @@ public class ProxyServer implements TourismAppService {
     private void initializeConnection() throws ServiceException {
         try {
             connection = new Socket(host, port);
-            output = new ObjectOutputStream(connection.getOutputStream());
-            output.flush();
-            input = new ObjectInputStream(connection.getInputStream());
+            outputStream = new DataOutputStream(connection.getOutputStream());
+            outputStream.flush();
+            inputStream = new DataInputStream(connection.getInputStream());
             finished = false;
             startReader();
         } catch (IOException e) {
@@ -142,7 +147,10 @@ public class ProxyServer implements TourismAppService {
         public void run() {
             while (!finished) {
                 try {
-                    String responseJSON = (String) input.readObject();
+                    int inputSize = inputStream.readInt();
+                    byte[] inputByte = new byte[inputSize];
+                    inputStream.read(inputByte, 0, inputSize);
+                    String responseJSON = new String(inputByte);
                     Response response = gson.fromJson(responseJSON, Response.class);
                     System.out.println("Response received " + response);
                     switch (response.getType()) {
@@ -165,17 +173,15 @@ public class ProxyServer implements TourismAppService {
                             continue;
                     }
                     if (response instanceof UpdateResponse) {
-                        if(response instanceof UpdateFlightsResponse) {
-                            handleUpdateFlightsResponse((UpdateFlightsResponse)response);
-                        }
+                        handleUpdateFlightsResponse((UpdateFlightsResponse) response);
                         continue;
                     }
                     try {
-                        qresponses.put((Response) response);
+                        qresponses.put(response);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                } catch (IOException | ClassNotFoundException e) {
+                } catch (IOException e) {
                     System.out.println("Reading error " + e);
                 }
             }
