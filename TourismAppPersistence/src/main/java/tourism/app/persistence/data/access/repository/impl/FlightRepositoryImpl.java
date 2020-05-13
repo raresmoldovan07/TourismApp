@@ -18,7 +18,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String FIND_ALL_QUERY = "select * from flight;";
+    private static final String FIND_ALL_QUERY = "select * from flight where available_spots > 0;";
     private static final String FIND_ONE_QUERY = "select * from flight where flight_id = ?;";
     private static final String UPDATE_QUERY = "update flight set destination=?, airport=?, flight_date_time=?, available_spots=? where flight_id = ?;";
     private static final String DELETE_QUERY = "delete from flight where flight_id = ?;";

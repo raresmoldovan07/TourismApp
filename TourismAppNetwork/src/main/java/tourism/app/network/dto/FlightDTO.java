@@ -3,15 +3,16 @@ package tourism.app.network.dto;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class FlightDTO implements Serializable {
+public class
+FlightDTO implements Serializable {
 
     private Integer id;
     private String destination;
     private String airport;
-    private LocalDateTime flightDateTime;
+    private String flightDateTime;
     private Integer availableSpots;
 
-    public FlightDTO(Integer id, String destination, String airport, LocalDateTime flightDateTime, Integer availableSpots) {
+    public FlightDTO(Integer id, String destination, String airport, String flightDateTime, Integer availableSpots) {
         this.id = id;
         this.destination = destination;
         this.airport = airport;
@@ -43,11 +44,11 @@ public class FlightDTO implements Serializable {
         this.airport = airport;
     }
 
-    public LocalDateTime getFlightDateTime() {
+    public String getFlightDateTime() {
         return flightDateTime;
     }
 
-    public void setFlightDateTime(LocalDateTime flightDateTime) {
+    public void setFlightDateTime(String flightDateTime) {
         this.flightDateTime = flightDateTime;
     }
 

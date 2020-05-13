@@ -151,8 +151,6 @@ public class Client implements Runnable, Observer {
         System.out.println("Sending response " + response);
         String responseJSON = gson.toJson(response);
         int responseSize = responseJSON.getBytes().length;
-        outputStream.writeInt(responseSize);
-        outputStream.flush();
         outputStream.write(responseJSON.getBytes(), 0, responseSize);
         outputStream.flush();
     }

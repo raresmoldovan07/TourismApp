@@ -147,9 +147,10 @@ public class ProxyServer implements TourismAppService {
         public void run() {
             while (!finished) {
                 try {
-                    int inputSize = inputStream.readInt();
+                    int inputSize = 10000;
                     byte[] inputByte = new byte[inputSize];
                     inputStream.read(inputByte, 0, inputSize);
+                    inputByte = shrink(inputByte);
                     String responseJSON = new String(inputByte);
                     Response response = gson.fromJson(responseJSON, Response.class);
                     System.out.println("Response received " + response);
@@ -186,5 +187,14 @@ public class ProxyServer implements TourismAppService {
                 }
             }
         }
+    }
+
+    private byte[] shrink(byte[] array) {
+        int i = 0;
+        while(array[i++] != '\0');
+        i -= 1;
+        byte[] result = new byte[i];
+        System.arraycopy(array, 0, result, 0, i);
+        return result;
     }
 }

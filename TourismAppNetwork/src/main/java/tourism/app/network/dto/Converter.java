@@ -4,6 +4,8 @@ import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.entity.Ticket;
 import tourism.app.persistence.data.access.entity.User;
 
+import java.time.LocalDateTime;
+
 public class Converter {
 
     public static UserDTO getUserDTO(User user) {
@@ -25,18 +27,18 @@ public class Converter {
     }
 
     public static FlightDTO getFlightDTO(Flight flight) {
-        return new FlightDTO(flight.getId(), flight.getDestination(), flight.getAirport(), flight.getFlightDateTime(), flight.getAvailableSpots());
+        return new FlightDTO(flight.getId(), flight.getDestination(), flight.getAirport(), flight.getFlightDateTime().toString(), flight.getAvailableSpots());
     }
 
     public static Flight getFlight(FlightDTO flight) {
-        return new Flight(flight.getId(), flight.getDestination(), flight.getAirport(), flight.getFlightDateTime(), flight.getAvailableSpots());
+        return new Flight(flight.getId(), flight.getDestination(), flight.getAirport(), LocalDateTime.parse(flight.getFlightDateTime()), flight.getAvailableSpots());
     }
 
     public static Flight[] getFlightsList(FlightDTO[] flightDTOS) {
         Flight[] flights = new Flight[flightDTOS.length];
         for (int i = 0; i < flightDTOS.length; ++i) {
             flights[i] = new Flight(flightDTOS[i].getId(), flightDTOS[i].getDestination(), flightDTOS[i].getAirport(),
-                    flightDTOS[i].getFlightDateTime(), flightDTOS[i].getAvailableSpots());
+                    LocalDateTime.parse(flightDTOS[i].getFlightDateTime()), flightDTOS[i].getAvailableSpots());
         }
         return flights;
     }
@@ -45,7 +47,7 @@ public class Converter {
         FlightDTO[] flightDTOS = new FlightDTO[flights.length];
         for (int i = 0; i < flights.length; ++i) {
             flightDTOS[i] = new FlightDTO(flights[i].getId(), flights[i].getDestination(), flights[i].getAirport(),
-                    flights[i].getFlightDateTime(), flights[i].getAvailableSpots());
+                    flights[i].getFlightDateTime().toString(), flights[i].getAvailableSpots());
         }
         return flightDTOS;
     }
