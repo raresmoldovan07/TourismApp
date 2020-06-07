@@ -10,6 +10,9 @@ public class Flight implements Entity<Integer> {
     private LocalDateTime flightDateTime;
     private Integer availableSpots;
 
+    public Flight() {
+    }
+
     public Flight(Integer id, String destination, String airport, LocalDateTime flightDateTime, Integer availableSpots) {
         this.id = id;
         this.destination = destination;

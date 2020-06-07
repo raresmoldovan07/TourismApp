@@ -2,8 +2,12 @@ package tourism.app.persistence.data.access.repository.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import tourism.app.persistence.data.access.entity.Flight;
 import tourism.app.persistence.data.access.repository.FlightRepository;
+import tourism.app.persistence.data.access.utils.HibernateUtils;
 import tourism.app.persistence.data.access.utils.JdbcUtils;
 
 import java.sql.Connection;
@@ -18,6 +22,8 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private SessionFactory sessionFactory;
+
     private static final String FIND_ALL_QUERY = "select * from flight where available_spots > 0;";
     private static final String FIND_ONE_QUERY = "select * from flight where flight_id = ?;";
     private static final String UPDATE_QUERY = "update flight set destination=?, airport=?, flight_date_time=?, available_spots=? where flight_id = ?;";
@@ -29,6 +35,7 @@ public class FlightRepositoryImpl implements FlightRepository {
 
     public FlightRepositoryImpl(JdbcUtils jdbcUtils) {
         this.jdbcUtils = jdbcUtils;
+        sessionFactory = HibernateUtils.initializeSessionFactory();
     }
 
     @Override
@@ -113,19 +120,17 @@ public class FlightRepositoryImpl implements FlightRepository {
     public Iterable<Flight> findAll() {
         List<Flight> flights = new ArrayList<>();
         LOGGER.info("Getting all flights");
-        try (Connection connection = jdbcUtils.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(FIND_ALL_QUERY);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                Integer flightId = resultSet.getInt("flight_id");
-                String destination = resultSet.getString("destination");
-                String airport = resultSet.getString("airport");
-                LocalDateTime flightDateTime = resultSet.getTimestamp("flight_date_time").toLocalDateTime();
-                Integer availableSpots = resultSet.getInt("available_spots");
-                flights.add(new Flight(flightId, destination, airport, flightDateTime, availableSpots));
+        try(Session session = sessionFactory.openSession()) {
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+                flights = session.createQuery("from Flight f where f.availableSpots > 0", Flight.class).list();
+                transaction.commit();
+            } catch(RuntimeException e) {
+                LOGGER.error("Error getting all flights", e);
+                if (transaction != null)
+                    transaction.rollback();
             }
-        } catch (SQLException e) {
-            LOGGER.error("Error getting all tickets", e);
         }
         return flights;
     }

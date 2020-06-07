@@ -1,0 +1,13 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="tourism.app.persistence.data.access.entity.User" table="user">
+        <id name="id" column="user_id">
+            <generator class="increment"/>
+        </id>
+        <property name="username" column="username"/>
+        <property name="name" column="name"/>
+        <property name="password" column="password"/>
+    </class>
+</hibernate-mapping>

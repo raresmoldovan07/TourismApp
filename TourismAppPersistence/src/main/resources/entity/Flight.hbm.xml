@@ -1,0 +1,14 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-mapping SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="tourism.app.persistence.data.access.entity.Flight" table="flight">
+        <id name="id" column="flight_id">
+            <generator class="increment"/>
+        </id>
+        <property name="destination" column="destination"/>
+        <property name="airport" column="airport"/>
+        <property name="flightDateTime" column="flight_date_time"/>
+        <property name="availableSpots" column="available_spots"/>
+    </class>
+</hibernate-mapping>

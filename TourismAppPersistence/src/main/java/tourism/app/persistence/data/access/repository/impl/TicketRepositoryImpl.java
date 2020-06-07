@@ -2,8 +2,14 @@ package tourism.app.persistence.data.access.repository.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.hql.spi.id.cte.CteValuesListBulkIdStrategy;
 import tourism.app.persistence.data.access.entity.Ticket;
+import tourism.app.persistence.data.access.entity.User;
 import tourism.app.persistence.data.access.repository.TicketRepository;
+import tourism.app.persistence.data.access.utils.HibernateUtils;
 import tourism.app.persistence.data.access.utils.JdbcUtils;
 
 import java.sql.Connection;
@@ -17,6 +23,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private SessionFactory sessionFactory;
+
     private static final String FIND_ALL_QUERY = "select * from ticket;";
     private static final String FIND_ONE_QUERY = "select * from ticket where ticket_id = ?;";
     private static final String UPDATE_QUERY = "update ticket set flight_id=?, spots=?, client_name=?, client_address=?, tourists=? where ticket_id = ?;";
@@ -28,6 +36,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     public TicketRepositoryImpl(JdbcUtils jdbcUtils) {
         this.jdbcUtils = jdbcUtils;
+        sessionFactory = HibernateUtils.initializeSessionFactory();
     }
 
     @Override
@@ -48,12 +57,17 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Override
     public void save(Ticket ticket) {
         LOGGER.info("Saving new ticket");
-        try (Connection connection = jdbcUtils.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(SAVE_QUERY);
-            setTicketFieldsInPreparedStatement(preparedStatement, ticket);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            LOGGER.error("Error saving new ticket", e);
+        try(Session session = sessionFactory.openSession()) {
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+                session.save(ticket);
+                transaction.commit();
+            } catch(RuntimeException e) {
+                LOGGER.error("Error saving ticket", e);
+                if (transaction != null)
+                    transaction.rollback();
+            }
         }
     }
 

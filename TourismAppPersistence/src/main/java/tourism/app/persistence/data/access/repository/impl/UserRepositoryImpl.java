@@ -2,8 +2,16 @@ package tourism.app.persistence.data.access.repository.impl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.internal.SessionFactoryImpl;
 import tourism.app.persistence.data.access.entity.User;
 import tourism.app.persistence.data.access.repository.UserRepository;
+import tourism.app.persistence.data.access.utils.HibernateUtils;
 import tourism.app.persistence.data.access.utils.JdbcUtils;
 
 import java.sql.Connection;
@@ -17,18 +25,20 @@ public class UserRepositoryImpl implements UserRepository {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static SessionFactory sessionFactory;
+
     private static final String FIND_ALL_QUERY = "select * from user;";
     private static final String FIND_ONE_QUERY = "select * from user where user_id = ?;";
     private static final String UPDATE_QUERY = "update user set username=?, name=?, password=? where user_id = ?;";
     private static final String DELETE_QUERY = "delete from user where user_id = ?;";
     private static final String SAVE_QUERY = "insert into user (username, name, password) values (?, ?, ?);";
     private static final String SIZE_QUERY = "select count(*) as SIZE from user;";
-    private static final String GET_USER_BY_USERNAME_AND_PASSWORD_QUERY = "select * from user where username=? and password=?";
 
     private JdbcUtils jdbcUtils;
 
     public UserRepositoryImpl(JdbcUtils jdbcUtils) {
         this.jdbcUtils = jdbcUtils;
+        sessionFactory = HibernateUtils.initializeSessionFactory();
     }
 
     @Override
@@ -122,16 +132,20 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getUserByUsernameAndPassword(String username, String password) {
         LOGGER.info("Getting user with username {}", username);
-        try (Connection connection = jdbcUtils.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement(GET_USER_BY_USERNAME_AND_PASSWORD_QUERY);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return getUserFromResultSet(resultSet);
+        try(Session session = sessionFactory.openSession()) {
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+                String query = String.format("from User u where u.username = '%s' and u.password = '%s'", username, password);
+                User user = session.createQuery(query, User.class).getSingleResult();
+                transaction.commit();
+                return user;
+            } catch(RuntimeException e) {
+                LOGGER.error("Error getting user", e);
+                if(transaction != null) {
+                    transaction.rollback();
+                }
             }
-        } catch (SQLException e) {
-            LOGGER.error("Error getting user with username {}", username);
         }
         return null;
     }
